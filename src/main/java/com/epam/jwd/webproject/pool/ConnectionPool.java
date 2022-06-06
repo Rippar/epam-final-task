@@ -26,6 +26,7 @@ import java.util.concurrent.Executor;
 
 public final class ConnectionPool {
 
+    private final static int DEFAULT_POOL_SIZE = 5;
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
     private String driverName;
@@ -44,7 +45,7 @@ public final class ConnectionPool {
         try {
             this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POLL_SIZE));
         } catch (NumberFormatException e) {
-            poolSize = 5;
+            poolSize = DEFAULT_POOL_SIZE;
         }
     }
 

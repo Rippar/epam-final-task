@@ -2,21 +2,31 @@ package com.epam.jwd.webproject.pool;
 
 public class PoolProvider {
 
-    private final static PoolProvider instance = new PoolProvider();
+    private final static PoolProvider instance;
 
-    private ConnectionPool connectionPool = new ConnectionPool();
-
-    private PoolProvider() {
+    static {
         try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            //заменить на нормальный Exception (например даоэксепшн) или лог?
-            throw new RuntimeException(e);
+            instance = new PoolProvider();
+        } catch (PoolInitException e) {
+            throw new ExceptionInInitializerError(e);
         }
     }
 
-    public static PoolProvider getInstance(){
+    private ConnectionPool connectionPool = new ConnectionPool();
+
+    private PoolProvider() throws PoolInitException {
+        try {
+            connectionPool.initPoolData();
+        } catch (ConnectionPoolException e) {
+            throw new PoolInitException();
+        }
+    }
+
+
+    public static PoolProvider getInstance() {
+        //lock
         return instance;
+        //unlock
     }
 
     public ConnectionPool getConnectionPool() {
