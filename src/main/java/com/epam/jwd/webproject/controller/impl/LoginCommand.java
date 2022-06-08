@@ -9,6 +9,7 @@ import com.epam.jwd.webproject.service.ServiceException;
 import com.epam.jwd.webproject.service.ServiceProvider;
 import com.epam.jwd.webproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
     @Override
@@ -18,16 +19,21 @@ public class LoginCommand implements Command {
         String password = request.getParameter(RequestParameterName.PASSWORD_PARAM_NAME);
         UserService userService = ServiceProvider.getInstance().getUserService();
         String page;
+        HttpSession session = request.getSession();
 
         try {
             if (userService.authentication(login, password)) {
                 request.setAttribute(RequestAttributeName.USER_ATTRIBUTE, login);
+                //сюда добавляем локаль, роль и текущую страницу
+                session.setAttribute("user_name", login);
                 page = PagePass.MAIN_PAGE;
             } else {
                 // Блинов сказал, что строка "incorrect login or pass" должна быть локализованной
                 request.setAttribute(RequestAttributeName.LOGIN_MSG_ATTRIBUTE, "incorrect login or pass");
                 page = PagePass.INDEX_PAGE;
             }
+            //для возврата на ту же самую страницу при смене локали
+            session.setAttribute("current_page", page);
 
         } catch (ServiceException e) {
             throw new CommandException(e);

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class UserDAOImpl implements UserDAO {
 
-    private final static String SELECT_LOGIN_PASSWORD = "SELEC password FROM users WHERE email = ?";
+    private final static String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE email = ?";
 
     @Override
     public boolean authentication(String login, String password) throws DAOException {

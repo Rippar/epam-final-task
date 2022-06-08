@@ -27,7 +27,9 @@ public class Controller extends HttpServlet {
         String page = null;
         try {
             page = command.execute(request);
-            request.getRequestDispatcher(page).forward(request, response);
+            //request.getRequestDispatcher(page).forward(request, response);
+            response.sendRedirect(page);
+
         } catch (CommandException e) {
             //response.sendError(500); //1 вариант обработки исключения
             //throw new ServletException(e); //2 вариант обработки исключения
@@ -43,6 +45,8 @@ public class Controller extends HttpServlet {
     }
 
     public void destroy() {
+
+        //верно ли так делать?
         ConnectionPool cp = PoolProvider.getInstance().getConnectionPool();
         cp.dispose();
     }
