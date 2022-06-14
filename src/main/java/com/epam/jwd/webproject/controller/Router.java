@@ -1,9 +1,9 @@
 package com.epam.jwd.webproject.controller;
 
-import com.epam.jwd.webproject.controller.constants.PagePass;
+import com.epam.jwd.webproject.controller.constants.PagePath;
 //Router для того, чтобы возвращать его из execute() вместо String
 public class Router {
-    private String page = PagePass.INDEX_PAGE;
+    private String page = PagePath.INDEX_PAGE;
     private Type type = Type.FORWARD;
 
     public Router(String page) {
@@ -21,6 +21,10 @@ public class Router {
 
     public String getPage() {
         return page;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setPage(String page) {

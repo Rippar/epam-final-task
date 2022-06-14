@@ -1,4 +1,4 @@
-package com.epam.jwd.webproject.pool;
+package com.epam.jwd.webproject.dao.impl.pool;
 
 public class PoolInitException extends Exception {
     public PoolInitException() {

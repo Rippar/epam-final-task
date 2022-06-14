@@ -2,8 +2,8 @@ package com.epam.jwd.webproject.dao.impl;
 
 import com.epam.jwd.webproject.dao.DAOException;
 import com.epam.jwd.webproject.dao.UserDAO;
-import com.epam.jwd.webproject.pool.ConnectionPoolException;
-import com.epam.jwd.webproject.pool.PoolProvider;
+import com.epam.jwd.webproject.dao.impl.pool.ConnectionPoolException;
+import com.epam.jwd.webproject.dao.impl.pool.PoolProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

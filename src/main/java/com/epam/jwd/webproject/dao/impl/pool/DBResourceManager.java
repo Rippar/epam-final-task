@@ -1,4 +1,4 @@
-package com.epam.jwd.webproject.pool;
+package com.epam.jwd.webproject.dao.impl.pool;
 
 import java.util.ResourceBundle;
 public class DBResourceManager {
