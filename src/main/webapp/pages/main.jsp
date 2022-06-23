@@ -11,13 +11,21 @@
     <title>Main</title>
 </head>
 <body>
-Hello (forward) = ${user}
-<hr/>
-Hi (redirect/forward) = ${user_name}
-<hr/>
+<jsp:include page="header.html"></jsp:include>
+<p>Welcome to main page!</p>
+<form action="controller">
+    <input type="hidden" name="command" value="gotoregistrationpage"/>
+    <input type="submit" value="Registration"/>
+</form>
+<form action="controller">
+    <input type="hidden" name="command" value="gotologinpage"/>
+    <input type="submit" value="login"/>
+</form>
 <form action="controller">
     <input type="hidden" name="command" value="logout"/>
     <input type="submit" value="logOut"/>
 </form>
+
+<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

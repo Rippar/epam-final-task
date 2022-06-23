@@ -18,15 +18,14 @@
     <!-- валидация на сервере будет в слое Service)-->
     Login: <input type="text" name = "login" value=""/>
     <br/>
-    Password: <input type = "password" name = "pass" value ="">
+    Password: <input type = "password" name = "password" value ="">
     <br/>
     <input type="submit" name = "sub" value="Push"/>
     <br/>
     ${login_msg}
     <br/>
-    ${pageContext.session.id}
-    <br/>
-    ${filter_attr}
+    ${user_data_session}
+
 </form>
 </body>
 </html>
