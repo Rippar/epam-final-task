@@ -38,7 +38,8 @@ public class PageRedirectSecurityFilter implements Filter {
                 CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM);
 
         adminPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, ADMIN_ACCOUNT_PAGE, ALL_USERS_PAGE,
-                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, INACTIVATE_USER_PAGE);
+                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, INACTIVATE_USER_PAGE, ADD_CAR_PAGE, UPDATE_CAR_PAGE,
+                ALL_CARS_PAGE, INACTIVATE_CAR_PAGE);
 
         allPages = new HashSet<>();
         allPages.addAll(guestPages);

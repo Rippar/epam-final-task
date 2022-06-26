@@ -24,9 +24,9 @@
     <br/>
     Passport number: <input type = "text" name = "passport" value ="">
     <br/>
-    Password: <input type = "text" name = "password" value ="">
+    Password: <input type = "password" name = "password" value ="">
     <br/>
-    Repeat password: <input type = "text" name = "repeat_password" value ="">
+    Repeat password: <input type = "password" name = "repeat_password" value ="">
     <br/>
     <input type="submit" name = "sub" value="Push"/>
     <br/>

@@ -36,11 +36,10 @@ public class InactivateUserCommand implements Command {
             boolean result = userService.inactivateUser(userData);
             int sizeAfter = userData.size();
 
-            if (sizeBefore == sizeAfter) {
-                //session.removeAttribute(USER_DATA_SESSION);
-            } else {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(USER_DATA_SESSION, userData);
             }
+
             session.setAttribute(INACTIVATE_USER_RESULT, result);
 
             session.setAttribute(CURRENT_PAGE, PagePath.INACTIVATE_USER_PAGE);
@@ -60,8 +59,6 @@ public class InactivateUserCommand implements Command {
 
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
         userData.put(USER_ID_TO_INACTIVATE_SESSION, request.getParameter(USER_ID_TO_INACTIVATE));
-
-
 
     }
 }

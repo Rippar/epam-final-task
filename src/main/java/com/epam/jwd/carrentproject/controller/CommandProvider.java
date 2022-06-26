@@ -1,24 +1,14 @@
 package com.epam.jwd.carrentproject.controller;
 
-import com.epam.jwd.carrentproject.controller.impl.ChangePasswordCommand;
-import com.epam.jwd.carrentproject.controller.impl.DefaultCommand;
-import com.epam.jwd.carrentproject.controller.impl.admin.FindAllUsersCommand;
-import com.epam.jwd.carrentproject.controller.impl.LoginCommand;
-import com.epam.jwd.carrentproject.controller.impl.LogoutCommand;
-import com.epam.jwd.carrentproject.controller.impl.AddUserCommand;
-import com.epam.jwd.carrentproject.controller.impl.RegistrationCommand;
-import com.epam.jwd.carrentproject.controller.impl.UpdateUserPersonalInfoCommand;
-import com.epam.jwd.carrentproject.controller.impl.admin.InactivateUserCommand;
+import com.epam.jwd.carrentproject.controller.impl.*;
+import com.epam.jwd.carrentproject.controller.impl.admin.*;
 import com.epam.jwd.carrentproject.controller.impl.to.*;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToChangePasswordForm;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToChangePersonalInfoForm;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToHomePageCommand;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToLoginPageCommand;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToMainPageCommand;
-import com.epam.jwd.carrentproject.controller.impl.to.GoToRegistrationPageCommand;
+
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.epam.jwd.carrentproject.controller.constant.CommandName.*;
 
 public class CommandProvider{
     private static Map<String, Command> commands;
@@ -26,23 +16,31 @@ public class CommandProvider{
     static {
         //продолжать наполнять командами
         commands= new HashMap<>();
-        commands.put("adduser", new AddUserCommand());
-        commands.put("login", new LoginCommand());
-        commands.put("logout", new LogoutCommand());
-        commands.put("default", new DefaultCommand());
-        commands.put("findallusers", new FindAllUsersCommand());
-        commands.put("registrationuser", new RegistrationCommand());
-        commands.put("gotomainpage", new GoToMainPageCommand());
-        commands.put("gotoregistrationpage", new GoToRegistrationPageCommand());
-        commands.put("updateuserpersonalinfo", new UpdateUserPersonalInfoCommand());
-        commands.put("gotologinpage", new GoToLoginPageCommand());
-        commands.put("gotoaccountpage", new GoToAccountPageCommand());
-        commands.put("gotohomepage", new GoToHomePageCommand());
-        commands.put("gotochangepersonalinfo", new GoToChangePersonalInfoForm());
-        commands.put("gotochangepassword", new GoToChangePasswordForm());
-        commands.put("changepassword", new ChangePasswordCommand());
-        commands.put("gotoinactivateuserpage", new GoToInactivateUserPage());
-        commands.put("inactivateuser", new InactivateUserCommand());
+        //commands.put(ADD_USER_COMMAND, new AddUserCommand());
+        commands.put(LOGIN_COMMAND, new LoginCommand());
+        commands.put(LOGOUT_COMMAND, new LogoutCommand());
+        commands.put(DEFAULT_COMMAND, new DefaultCommand());
+        commands.put(FIND_ALL_USERS_COMMAND, new FindAllUsersCommand());
+        commands.put(REGISTRATION_USER_COMMAND, new RegistrationCommand());
+        commands.put(GO_TO_MAIN_PAGE_COMMAND, new GoToMainPageCommand());
+        commands.put(GO_TO_REGISTRATION_PAGE_COMMAND, new GoToRegistrationPageCommand());
+        commands.put(UPDATE_USER_PERSONAL_INFO_COMMAND, new UpdateUserPersonalInfoCommand());
+        commands.put(GO_TO_LOGIN_PAGE_COMMAND, new GoToLoginPageCommand());
+        commands.put(GO_TO_ACCOUNT_PAGE_COMMAND, new GoToAccountPageCommand());
+        commands.put(GO_TO_HOMEPAGE_COMMAND, new GoToHomePageCommand());
+        commands.put(GO_TO_CHANGE_PERSONAL_INFO_PAGE_COMMAND, new GoToChangePersonalInfoForm());
+        commands.put(GO_TO_CHANGE_PASSWORD_PAGE_COMMAND, new GoToChangePasswordForm());
+        commands.put(CHANGE_PASSWORD_COMMAND, new ChangePasswordCommand());
+        commands.put(GO_TO_INACTIVATE_USER_PAGE_COMMAND, new GoToInactivateUserPage());
+        commands.put(INACTIVATE_USER_COMMAND, new InactivateUserCommand());
+        commands.put(GO_TO_ADD_CAR_PAGE_COMMAND, new GoToAddCarPage());
+        commands.put(ADD_CAR_COMMAND, new AddCarCommand());
+        commands.put(GO_TO_UPDATE_CAR_PAGE_COMMAND, new GoToUpdateCarPage());
+        commands.put(UPDATE_CAR_COMMAND, new UpdateCarCommand());
+        commands.put(FIND_ALL_CARS_COMMAND, new FindAllCarsCommand());
+        commands.put(GO_TO_INACTIVATE_CAR_PAGE_COMMAND, new GoToInactivateCarPage());
+        commands.put(INACTIVATE_CAR_COMMAND, new InactivateCarCommand());
+
 
     }
 
@@ -54,7 +52,7 @@ public class CommandProvider{
         if (command != null) {
             return command;
         } else {
-            return commands.get("default");
+            return commands.get(DEFAULT_COMMAND);
         }
     }
 }

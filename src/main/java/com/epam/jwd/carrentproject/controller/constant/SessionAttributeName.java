@@ -37,13 +37,34 @@ public class SessionAttributeName {
     public static final String WRONG_REPEATED_NEW_PASSWORD_SESSION = "wrong_repeated_new_password_session";
     public static final String WRONG_OLD_PASSWORD_SESSION = "wrong_old_password_session";
     public static final String CHANGE_PASSWORD_RESULT = "change_password_result";
-
     public static final String REPEAT_NEW_PASSWORD_SESSION = "repeat_new_password_session";
-
     public static final String USER_ID_TO_INACTIVATE_SESSION = "user_id_to_inactivate_session";
     public static final String WRONG_ID_SESSION = "wrong_id_session";
-
     public static final String INACTIVATE_USER_RESULT = "inactivate_user_result";
-
+    public static final String CAR_ID_SESSION = "car_id_session";
+    public static final String CAR_BRAND_SESSION = "car_brand_session";
+    public static final String CAR_MODEL_SESSION = "car_model_session";
+    public static final String CAR_CLASS_SESSION = "car_class_session";
+    public static final String CAR_BODY_SESSION = "car_body_session";
+    public static final String AUTO_TRANSMISSION_SESSION = "auto_transmission_session";
+    public static final String AIR_CONDITIONING_SESSION = "air_conditioning_session";
+    public static final String NUM_OF_DOORS_SESSION = "num_of_doors_session";
+    public static final String NUM_OF_SEATS_SESSION = "num_of_seats_session";
+    public static final String RENTAL_PRICE_SESSION = "rental_price_session";
+    public static final String IS_ACTIVE_CAR_SESSION = "is_active_car_session";
+    public static final String WRONG_CAR_BRAND_SESSION = "wrong_car_brand_session";
+    public static final String WRONG_CAR_MODEL_SESSION = "wrong_car_model_session";
+    public static final String WRONG_CAR_CLASS_SESSION = "wrong_car_class_session";
+    public static final String WRONG_CAR_BODY_SESSION = "wrong_car_body_session";
+    public static final String WRONG_AUTO_TRANSMISSION_SESSION = "wrong_auto_transmission_session";
+    public static final String WRONG_AIR_CONDITIONING_SESSION = "wrong_air_conditioning_session";
+    public static final String WRONG_NUM_OF_DOORS_SESSION = "wrong_num_of_doors_session";
+    public static final String WRONG_NUM_OF_SEATS_SESSION = "wrong_num_of_seats_session";
+    public static final String WRONG_PRICE_SESSION = "wrong_price_session";
+    public static final String CAR_DATA_SESSION = "car_data_session";
+    public static final String ADD_CAR_RESULT = "add_car_result";
+    public static final String UPDATE_CAR_RESULT = "update_car_result";
+    public static final String CAR_ID_TO_INACTIVATE_SESSION = "car_id_to_inactivate_session";
+    public static final String INACTIVATE_CAR_RESULT = "inactivate_car_result";
 
 }

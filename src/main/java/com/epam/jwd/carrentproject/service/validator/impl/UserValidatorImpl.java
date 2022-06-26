@@ -17,6 +17,7 @@ public class UserValidatorImpl implements UserValidator {
     private static final String SURNAME_REGEX = "[А-Я\\p{Upper}][а-я\\p{Lower}]{1,20}";
     private static final String EMAIL_REGEX = "(([\\p{Alpha}\\d._]+){5,25}@([\\p{Lower}]+){3,7}\\.([\\p{Lower}]+){2,3})";
     private static final String PASSPORT_REGEX = "[А-Я]{2}[0-9]{7}";
+    private static final String INTEGER_CHECK = "\\d+";
 
     private static final UserValidator instance = new UserValidatorImpl();
 
@@ -30,6 +31,11 @@ public class UserValidatorImpl implements UserValidator {
      */
     public static UserValidator getInstance() {
         return instance;
+    }
+
+    @Override
+    public boolean validateUserId(String id) {
+        return id.matches(INTEGER_CHECK);
     }
 
     @Override

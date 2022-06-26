@@ -10,6 +10,14 @@ import java.util.Map;
 public interface UserValidator {
 
     /**
+     * Validate user's id for update boolean.
+     *
+     * @param id user's id
+     * @return the boolean
+     */
+    boolean validateUserId(String id);
+
+    /**
      * Validate login boolean.
      *
      * @param login the login
@@ -64,5 +72,12 @@ public interface UserValidator {
      * @return the boolean
      */
     boolean validateUserPersonalDataWhenCreate(Map<String, String> userData);
+
+    /**
+     * Validate user data for update boolean.
+     *
+     * @param userData the user data
+     * @return the boolean
+     */
     boolean validateUserPersonalDataWhenUpdate(Map<String, String> userData);
 }

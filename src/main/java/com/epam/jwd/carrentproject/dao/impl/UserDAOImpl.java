@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,27 +22,28 @@ public class UserDAOImpl implements UserDAO {
     static Logger logger = LogManager.getLogger();
     private final static String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE email = ?";
     private static final String SELECT_ALL_USERS =
-            "SELECT user_id, login, password, first_name, last_name, email, " + "passport_number, is_active, role_id " +
+            "SELECT user_id, login, password, first_name, last_name, email, passport_number, is_active, role_id " +
                     "FROM users";
     private static final String INSERT_USER = "INSERT INTO users (login, password, first_name, last_name, email, " +
             "passport_number, is_active, role_id) values (?,?,?,?,?,?,?,?)";
     private static final String SELECT_USER_BY_LOGIN = "SELECT user_id FROM users WHERE login = ?";
     private static final String SELECT_USER_BY_PASSPORT = "SELECT user_id FROM users WHERE passport_number = ?";
-    private static final String UPDATE_USER_INFO = "UPDATE users SET first_name=?, last_name=?, email=? WHERE user_id=?";
+    private static final String UPDATE_USER_INFO = "UPDATE users SET first_name=?, last_name=?, email=? WHERE " +
+            "user_id=?";
     private static final String INACTIVATE_USER = "UPDATE users SET is_active = 0 WHERE user_id=?";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD =
             "SELECT user_id, login, password, first_name, " + "last_name, email, passport_number, is_active, role_id " +
                     "FROM users WHERE login=? AND password =? AND is_active=1";
 
     private static final String SELECT_USER_BY_ID =
-            "SELECT user_id, login, password, first_name, last_name, email, " + "passport_number, is_active, role_id " +
-            "FROM users WHERE user_id =?";
+            "SELECT user_id, login, password, first_name, last_name, email, passport_number, is_active, role_id FROM " +
+                    "users WHERE user_id =?";
 
     private static final String UPDATE_PASSWORD = "UPDATE users SET password =? WHERE user_id =?";
 
     @Override
     public List<User> findAll() throws DAOException {
-        List<User> userList = new ArrayList<>();
+        List<User> userList;
         PoolProvider poolProvider = PoolProvider.getInstance();
         try (Connection connection = poolProvider.getConnectionPool().takeConnection(); PreparedStatement statement =
                 connection.prepareStatement(SELECT_ALL_USERS); ResultSet resultSet = statement.executeQuery()) {
@@ -66,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
         boolean result;
         PoolProvider poolProvider = PoolProvider.getInstance();
         try (Connection connection = poolProvider.getConnectionPool().takeConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER)) {
 
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setBoolean(7, user.isActive());
             preparedStatement.setInt(8, user.getUserRoleId());
 
-            result = (preparedStatement.executeUpdate() == 1 ? true : false);
+            result = (preparedStatement.executeUpdate() == 1);
 
 
         } catch (SQLException | ConnectionPoolException e) {
@@ -98,7 +98,7 @@ public class UserDAOImpl implements UserDAO {
 
             preparedStatement.setInt(1, user.getUserId());
 
-            result = (preparedStatement.executeUpdate() == 1 ? true : false);
+            result = (preparedStatement.executeUpdate() == 1);
 
 
         } catch (SQLException | ConnectionPoolException e) {
@@ -122,7 +122,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setInt(4, user.getUserId());
 
-            result = (preparedStatement.executeUpdate() == 1 ? true : false);
+            result = (preparedStatement.executeUpdate() == 1);
 
 
         } catch (SQLException | ConnectionPoolException e) {
@@ -238,7 +238,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setInt(2, userId);
 
 
-            isUpdated = (preparedStatement.executeUpdate() == 1 ? true : false);
+            isUpdated = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error has occurred while updating user's password.", e);

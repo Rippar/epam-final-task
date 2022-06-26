@@ -98,15 +98,15 @@ public class UserServiceImpl implements UserService {
         try {
             String encryptedPassword = PasswordEncryptor.md5Apache(password);
             optionalUser = userDAO.findUserByLoginAndPassword(login, encryptedPassword);
-            if(optionalUser.isEmpty()) {
-                logger.info("User " + login + " has not found in users");
+            if (optionalUser.isEmpty()) {
+                logger.info("User " + login + " has not been found in users");
                 userData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
                 return isUpdated;
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to authenticate user while update personal info.", e);
-            throw new ServiceException("Unsuccessful attempt to authenticate user while update personal info.", e);
+            logger.error("Unsuccessful attempt to authenticate user while updating personal info.", e);
+            throw new ServiceException("Unsuccessful attempt to authenticate user while updating personal info.", e);
         }
 
         String firstName = userData.get(FIRST_NAME_SESSION);
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         try {
-            isUpdated=userDAO.update(tempUser);
+            isUpdated = userDAO.update(tempUser);
         } catch (DAOException e) {
             logger.error("Unsuccessful attempt to update user's personal info.", e);
             throw new ServiceException("Unsuccessful attempt to update user's personal info.", e);
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
         try {
             String encryptedPassword = PasswordEncryptor.md5Apache(password);
             optionalUser = userDAO.findUserByLoginAndPassword(login, encryptedPassword);
-            if(optionalUser.isEmpty()) {
+            if (optionalUser.isEmpty()) {
                 logger.info("User " + login + " has not found in users");
                 userData.put(NOT_FOUND_SESSION, WRONG_DATA_MARKER);
 
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
         String oldSecretPassword = PasswordEncryptor.md5Apache(oldPassword);
 
         try {
-            optionalUser= userDAO.findUserByLoginAndPassword(login, oldSecretPassword);
+            optionalUser = userDAO.findUserByLoginAndPassword(login, oldSecretPassword);
             if (optionalUser.isEmpty()) {
                 logger.info("Wrong password.");
                 passwordData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
@@ -210,12 +210,19 @@ public class UserServiceImpl implements UserService {
         boolean isInactivate = false;
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
         Optional<User> optionalUser;
+        UserValidator validator = UserValidatorImpl.getInstance();
+
+        if (!validator.validateUserId(userData.get(USER_ID_TO_INACTIVATE_SESSION))) {
+            logger.info("User with Id " + userData.get(USER_ID_TO_INACTIVATE_SESSION) + " has not found in users");
+            userData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
+            return isInactivate;
+        }
 
         int userIdToInactivate = Integer.parseInt(userData.get(USER_ID_TO_INACTIVATE_SESSION));
 
         try {
             optionalUser = userDAO.findEntityById(userIdToInactivate);
-            if(optionalUser.isEmpty()) {
+            if (optionalUser.isEmpty()) {
                 logger.info("User with Id " + userIdToInactivate + " has not found in users");
                 userData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
                 return isInactivate;
@@ -231,7 +238,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         try {
-            isInactivate=userDAO.delete(tempUser);
+            isInactivate = userDAO.delete(tempUser);
         } catch (DAOException e) {
             logger.error("Unsuccessful attempt to inactivate user.", e);
             throw new ServiceException("Unsuccessful attempt to inactivate user.", e);
@@ -240,17 +247,4 @@ public class UserServiceImpl implements UserService {
         return isInactivate;
     }
 
-
-//    @Override
-//    public boolean authentication(String login, String password) throws ServiceException {
-//        //validate login, pass +MD5
-//        UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
-//        boolean result;
-//        try {
-//            result = userDAO.authentication(login, password);
-//        } catch (DAOException e) {
-//            throw new ServiceException(e);
-//        }
-//        return result;
-//    }
 }

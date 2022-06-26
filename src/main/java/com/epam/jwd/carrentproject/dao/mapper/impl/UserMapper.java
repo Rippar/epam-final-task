@@ -36,7 +36,7 @@ public class UserMapper implements Mapper<User> {
                     .withLastName(resultSet.getString(LAST_NAME))
                     .withEmail(resultSet.getString(EMAIL))
                     .withPassport(resultSet.getString(PASSPORT_NUMBER))
-                    .withIsActive(resultSet.getBoolean(IS_ACTIVE))
+                    .withIsActive(resultSet.getBoolean(IS_ACTIVE_USER))
                     .withUserRole(resultSet.getInt(ROLE_ID))
                     .build();
             users.add(user);

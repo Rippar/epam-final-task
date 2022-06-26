@@ -15,6 +15,10 @@ public class PagePath {
     public static final String CHANGE_PERSONAL_INFO_FORM = "pages/change_personal_info_form.jsp";
     public static final String CHANGE_PASSWORD_FORM = "pages/change_password_form.jsp";
     public static final String INACTIVATE_USER_PAGE="pages/admin/inactivate_user.jsp";
+    public static final String ADD_CAR_PAGE="pages/admin/add_car.jsp";
+    public static final String UPDATE_CAR_PAGE="pages/admin/update_car.jsp";
+    public static final String ALL_CARS_PAGE="pages/admin/cars.jsp";
+    public static final String INACTIVATE_CAR_PAGE="pages/admin/inactivate_car.jsp";
 
 
 
