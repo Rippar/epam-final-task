@@ -21,11 +21,12 @@
     <input type="submit" name = "sub" value="Update password"/>
     <br/>
 </form>
+Change password result: ${change_password_result}
+<br/>
 <hr/>
-User data ${user_data_session}
-<br/>
-Result: ${change_password_result}
-<br/>
-If result = false, please return to the account, refresh the page and try again
+<form action="controller">
+    <input type="hidden" name="command" value="gotoaccountpage"/>
+    <input type="submit" value="Return to account's page"/>
+</form>
 </body>
 </html>

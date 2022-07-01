@@ -38,10 +38,14 @@ Fill in the fields to update the car:
     <input type="submit" name = "sub" value=Update car/>
     <br/>
 </form>
-<hr/>
 Car data ${car_data_session}
 <br/>
 Result: ${update_car_result}
 <br/>
+<hr/>
+<form action="controller">
+    <input type="hidden" name="command" value="gotoaccountpage"/>
+    <input type="submit" value="Return to account's page"/>
+</form>
 </body>
 </html>

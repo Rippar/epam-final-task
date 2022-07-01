@@ -18,12 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
-
-    static Logger logger = LogManager.getLogger();
-    private final static String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE email = ?";
-    private static final String SELECT_ALL_USERS =
-            "SELECT user_id, login, password, first_name, last_name, email, passport_number, is_active, role_id " +
-                    "FROM users";
+    private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String INSERT_USER = "INSERT INTO users (login, password, first_name, last_name, email, " +
             "passport_number, is_active, role_id) values (?,?,?,?,?,?,?,?)";
     private static final String SELECT_USER_BY_LOGIN = "SELECT user_id FROM users WHERE login = ?";
@@ -31,15 +26,15 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_USER_INFO = "UPDATE users SET first_name=?, last_name=?, email=? WHERE " +
             "user_id=?";
     private static final String INACTIVATE_USER = "UPDATE users SET is_active = 0 WHERE user_id=?";
-    private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD =
-            "SELECT user_id, login, password, first_name, " + "last_name, email, passport_number, is_active, role_id " +
-                    "FROM users WHERE login=? AND password =? AND is_active=1";
 
-    private static final String SELECT_USER_BY_ID =
-            "SELECT user_id, login, password, first_name, last_name, email, passport_number, is_active, role_id FROM " +
-                    "users WHERE user_id =?";
+    private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD =
+            "SELECT * FROM users WHERE login=? AND password =? AND is_active=1";
+
+    private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id =?";
 
     private static final String UPDATE_PASSWORD = "UPDATE users SET password =? WHERE user_id =?";
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public List<User> findAll() throws DAOException {

@@ -3,20 +3,21 @@ package com.epam.jwd.carrentproject.entity;
 import java.util.HashMap;
 
 public class UserRole {
-    private static HashMap<Integer, String> userRoles = new HashMap<>();
+
+    public static final String ADMIN_ROLE = "админ";
+    public static final String CUSTOMER_ROLE = "клиент";
+    public static final String GUEST_ROLE = "гость";
+
+    private static HashMap<String, Integer> userRoles = new HashMap<>();
 
     static {
-        userRoles.put(1, "admin");
-        userRoles.put(2, "customer");
-        userRoles.put(3, "guest");
+        userRoles.put(ADMIN_ROLE, 1);
+        userRoles.put(CUSTOMER_ROLE, 2);
+        userRoles.put(GUEST_ROLE, 3);
     }
 
-    public static String getRole(int id) {
-        return userRoles.get(id);
+    public static int getRoleId(String roleName) {
+        return userRoles.get(roleName);
     }
 
-    public static void addRole(String roleName) {
-        int id = userRoles.size();
-        userRoles.put(++id, roleName);
-    }
 }

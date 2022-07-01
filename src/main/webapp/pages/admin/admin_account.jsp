@@ -13,55 +13,69 @@
 <body>
 ADMIN'S ACCOUNT PAGE
 <hr/>
+Personal data change:
+<br/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="gotochangepassword"/>
     <input type="submit" value="Change password"/>
 </form>
-<hr/>
-<hr/>
+
 <form action="controller">
     <input type="hidden" name="command" value="gotochangepersonalinfo"/>
     <input type="submit" value="Change personal info"/>
 </form>
 <hr/>
+Admin functions:
+<br/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="findallusers"/>
     <input type="submit" value="Get list of all users"/>
 </form>
-<hr/>
-<hr/>
+
 <form action="controller">
     <input type="hidden" name="command" value="findallcars"/>
     <input type="submit" value="Get list of all cars"/>
 </form>
-<hr/>
-<hr/>
+
 <form action="controller">
-    <input type="hidden" name="command" value="gotoinactivateuserpage"/>
-    <input type="submit" value="Go to inactivate user page"/>
+    <input type="hidden" name="command" value="findallorders"/>
+    <input type="submit" value="Get list of all orders"/>
 </form>
-<hr/>
-<hr/>
+
+<form action="controller">
+    <input type="hidden" name="command" value="findallreturnforms"/>
+    <input type="submit" value="Get list of all return forms"/>
+</form>
+
 <form action="controller">
     <input type="hidden" name="command" value="gotoaddcarpage"/>
     <input type="submit" value="Go to add car page"/>
 </form>
-<hr/>
-<hr/>
+
 <form action="controller">
     <input type="hidden" name="command" value="gotoupdatecarpage"/>
     <input type="submit" value="Go to update car page"/>
 </form>
 <hr/>
-<hr/>
+Inactivate functions:
+<br/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="gotoinactivateuserpage"/>
     <input type="submit" value="Go to inactivate user page"/>
 </form>
-<hr/>
+
 <form action="controller">
     <input type="hidden" name="command" value="gotoinactivatecarpage"/>
     <input type="submit" value="Go to inactivate car page"/>
+</form>
+<hr/>
+<br/>
+<form action="controller">
+    <input type="hidden" name="command" value="gotohomepage"/>
+    <input type="submit" value="Return to home page"/>
 </form>
 <hr/>
 User data ${user_data_session}

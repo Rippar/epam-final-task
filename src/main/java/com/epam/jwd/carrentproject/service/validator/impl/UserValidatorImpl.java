@@ -10,14 +10,16 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
 public class UserValidatorImpl implements UserValidator {
-    static Logger logger = LogManager.getLogger();
     private static final String LOGIN_REGEX = "[\\p{Alpha}][\\p{Alpha}\\d]{4,29}";
-    private static final String PASSWORD_REGEX = "^[\\wА-я\\.\\-]{3,45}$";
+    private static final String PASSWORD_REGEX = "^[\\wА-я.\\-]{3,45}$";
     private static final String NAME_REGEX = "[А-Я\\p{Upper}][а-яё\\p{Lower}]{1,15}";
     private static final String SURNAME_REGEX = "[А-Я\\p{Upper}][а-я\\p{Lower}]{1,20}";
-    private static final String EMAIL_REGEX = "(([\\p{Alpha}\\d._]+){5,25}@([\\p{Lower}]+){3,7}\\.([\\p{Lower}]+){2,3})";
+    private static final String EMAIL_REGEX = "(([\\p{Alpha}\\d._]+){5,25}@([\\p{Lower}]+){3,7}\\.([\\p{Lower}]+){2," +
+            "3})";
     private static final String PASSPORT_REGEX = "[А-Я]{2}[0-9]{7}";
     private static final String INTEGER_CHECK = "\\d+";
+
+    private static final Logger logger = LogManager.getLogger();
 
     private static final UserValidator instance = new UserValidatorImpl();
 
@@ -65,7 +67,7 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean validatePassportNum(String passportNumber) {
-        return passportNumber!= null && passportNumber.matches(PASSPORT_REGEX);
+        return passportNumber != null && passportNumber.matches(PASSPORT_REGEX);
     }
 
     @Override
@@ -110,7 +112,7 @@ public class UserValidatorImpl implements UserValidator {
             isValid = false;
         }
 
-        if (!validatePassportNum(passportNum)){
+        if (!validatePassportNum(passportNum)) {
             userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid passport number.");
             isValid = false;
@@ -127,19 +129,19 @@ public class UserValidatorImpl implements UserValidator {
         boolean isValid = true;
 
         if (!validateName(firstName)) {
-            logger.info("first name------> "+firstName); //delete
+            logger.info("first name------> " + firstName); //delete
             userData.put(WRONG_FIRST_NAME_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid first name.");
             isValid = false;
         }
         if (!validateName(lastName)) {
-            logger.info("last name------> "+lastName); //delete
+            logger.info("last name------> " + lastName); //delete
             userData.put(WRONG_LAST_NAME_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid last name.");
             isValid = false;
         }
         if (!validateEmail(email)) {
-            logger.info("email------> "+email); //delete
+            logger.info("email------> " + email); //delete
             userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid email.");
             isValid = false;

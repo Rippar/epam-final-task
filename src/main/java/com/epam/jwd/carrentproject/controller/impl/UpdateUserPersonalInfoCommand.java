@@ -4,7 +4,6 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
-import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.ServiceProvider;
 import com.epam.jwd.carrentproject.service.UserService;
@@ -19,8 +18,8 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
 public class UpdateUserPersonalInfoCommand implements Command {
-    static Logger logger = LogManager.getLogger();
-    private static final int ADMIN_ROLE_ID = 1;
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -39,23 +38,14 @@ public class UpdateUserPersonalInfoCommand implements Command {
             boolean result = userService.updateUserPersonalInfo(userData);
             int sizeAfter = userData.size();
 
-            if (sizeBefore == sizeAfter) {
-                session.removeAttribute(USER_DATA_SESSION);
-            } else {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(USER_DATA_SESSION, userData);
             }
+
             session.setAttribute(UPDATE_PERSONAL_INFO_RESULT, result);
 
-
-            int roleId = (int) session.getAttribute(SessionAttributeName.CURRENT_ROLE);
-
-            if (roleId == ADMIN_ROLE_ID) {
-                session.setAttribute(CURRENT_PAGE, PagePath.ADMIN_ACCOUNT_PAGE);
-                router = new Router(PagePath.CHANGE_PERSONAL_INFO_FORM, Router.Type.REDIRECT);
-            } else {
-                session.setAttribute(CURRENT_PAGE, PagePath.CUSTOMER_ACCOUNT_PAGE);
-                router = new Router(PagePath.CHANGE_PERSONAL_INFO_FORM, Router.Type.REDIRECT);
-            }
+            session.setAttribute(CURRENT_PAGE, PagePath.CHANGE_PERSONAL_INFO_FORM);
+            router = new Router(PagePath.CHANGE_PERSONAL_INFO_FORM);
 
         } catch (ServiceException e) {
             logger.error("Unsuccessful attempt to update account's info.", e);

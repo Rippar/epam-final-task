@@ -1,29 +1,23 @@
 package com.epam.jwd.carrentproject.controller.filter;
 
 import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
+import com.epam.jwd.carrentproject.entity.UserRole;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.epam.jwd.carrentproject.controller.constant.PagePath.*;
+import static com.epam.jwd.carrentproject.entity.UserRole.*;
 
 
 @WebFilter(filterName = "PageRedirectSecurityFilter", urlPatterns = {"/pages/*"})
 public class PageRedirectSecurityFilter implements Filter {
-
-    static Logger logger = LogManager.getLogger();
-
-    private static final int ADMIN_ROLE_ID = 1;
-    private static final int CUSTOMER_ROLE_ID = 2;
 
     private Set<String> guestPages;
     private Set<String> customerPages;
@@ -35,11 +29,12 @@ public class PageRedirectSecurityFilter implements Filter {
         guestPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE);
 
         customerPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, CUSTOMER_ACCOUNT_PAGE,
-                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM);
+                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, ORDER_FORM, PAYMENT_FORM, USER_ORDERS_PAGE);
 
         adminPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, ADMIN_ACCOUNT_PAGE, ALL_USERS_PAGE,
                 CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, INACTIVATE_USER_PAGE, ADD_CAR_PAGE, UPDATE_CAR_PAGE,
-                ALL_CARS_PAGE, INACTIVATE_CAR_PAGE);
+                ALL_CARS_PAGE, INACTIVATE_CAR_PAGE, ORDER_FORM, PAYMENT_FORM, USER_ORDERS_PAGE, ALL_ORDERS_PAGE,
+                CONFIRM_ORDERS_PAGE,CANCEL_ORDERS_PAGE, COMPLETE_ORDERS_PAGE, ALL_RETURN_FORMS_PAGE);
 
         allPages = new HashSet<>();
         allPages.addAll(guestPages);
@@ -50,8 +45,6 @@ public class PageRedirectSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-        logger.log(Level.INFO, "--------xxxxxx-------- >>>>>>Start PageRedirectSecurityFilter");
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -65,9 +58,9 @@ public class PageRedirectSecurityFilter implements Filter {
             int roleId = (int) session.getAttribute(SessionAttributeName.CURRENT_ROLE);
 
             boolean isAcceptable;
-            if (roleId == ADMIN_ROLE_ID) {
+            if (roleId == UserRole.getRoleId(ADMIN_ROLE)) {
                 isAcceptable = adminPages.stream().anyMatch(requestURI::contains);
-            } else if (roleId == CUSTOMER_ROLE_ID) {
+            } else if (roleId == UserRole.getRoleId(CUSTOMER_ROLE)) {
                 isAcceptable = customerPages.stream().anyMatch(requestURI::contains);
             } else {
                 isAcceptable = guestPages.stream().anyMatch(requestURI::contains);
@@ -81,7 +74,6 @@ public class PageRedirectSecurityFilter implements Filter {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         filterChain.doFilter(servletRequest, servletResponse);
-        logger.log(Level.INFO, "--------xxxxxx-------- >>>>>>End PageRedirectSecurityFilter");
 
     }
 

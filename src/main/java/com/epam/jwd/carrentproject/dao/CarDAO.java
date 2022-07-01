@@ -2,6 +2,7 @@ package com.epam.jwd.carrentproject.dao;
 
 import com.epam.jwd.carrentproject.entity.Car;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,6 @@ public interface CarDAO extends BaseDAO<Integer, Car>{
 
     @Override
     Optional<Car> findEntityById(Integer entityId) throws DAOException;
+
+    List<Car> findAllAvailableCars(LocalDate pickUpDate, LocalDate dropOffDate) throws DAOException;
 }

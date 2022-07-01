@@ -18,14 +18,14 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
 public class AddCarCommand implements Command {
-    static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
 
         Map<String, String> carData = (Map<String, String>) session.getAttribute(CAR_DATA_SESSION);
         removeTempData(carData);
-        updateUserDataFromRequest(request, carData);
+        updateCarDataFromRequest(request, carData);
         CarService carService = ServiceProvider.getInstance().getCarService();
         Router router;
 
@@ -69,7 +69,7 @@ public class AddCarCommand implements Command {
         carData.remove(WRONG_PRICE_SESSION);
     }
 
-    private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> carData) {
+    private void updateCarDataFromRequest(HttpServletRequest request, Map<String, String> carData) {
         carData.put(CAR_BRAND_SESSION, request.getParameter(CAR_BRAND));
         carData.put(CAR_MODEL_SESSION, request.getParameter(CAR_MODEL));
         carData.put(CAR_CLASS_SESSION, request.getParameter(CAR_CLASS));

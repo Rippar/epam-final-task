@@ -17,13 +17,16 @@
     <input type="hidden" name="command" value="gotoregistrationpage"/>
     <input type="submit" value="Registration"/>
 </form>
+Registration result: ${registration_result}
+<br/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="gotologinpage"/>
     <input type="submit" value="login"/>
 </form>
 <form action="controller">
     <input type="hidden" name="command" value="logout"/>
-    <input type="submit" value="logOut"/>
+    <input type="submit" value="Refresh"/>
 </form>
 
 <jsp:include page="footer.jsp"></jsp:include>

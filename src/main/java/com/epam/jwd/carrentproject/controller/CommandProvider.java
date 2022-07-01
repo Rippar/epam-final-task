@@ -14,9 +14,9 @@ public class CommandProvider{
     private static Map<String, Command> commands;
 
     static {
-        //продолжать наполнять командами
+
         commands= new HashMap<>();
-        //commands.put(ADD_USER_COMMAND, new AddUserCommand());
+
         commands.put(LOGIN_COMMAND, new LoginCommand());
         commands.put(LOGOUT_COMMAND, new LogoutCommand());
         commands.put(DEFAULT_COMMAND, new DefaultCommand());
@@ -40,7 +40,18 @@ public class CommandProvider{
         commands.put(FIND_ALL_CARS_COMMAND, new FindAllCarsCommand());
         commands.put(GO_TO_INACTIVATE_CAR_PAGE_COMMAND, new GoToInactivateCarPage());
         commands.put(INACTIVATE_CAR_COMMAND, new InactivateCarCommand());
-
+        commands.put(GO_TO_ORDER_FORM, new GoToOrderForm());
+        commands.put(ADD_ORDER_COMMAND, new AddOrderCarCommand());
+        commands.put(GO_TO_USER_ORDERS_PAGE, new GoToUserOrdersPage());
+        commands.put(INACTIVATE_ORDER_COMMAND, new InactivateOrderCommand());
+        commands.put(FIND_ALL_ORDERS_COMMAND, new FindAllOrdersCommand());
+        commands.put(GO_TO_CONFIRM_ORDERS_PAGE, new GoToConfirmOrdersPage());
+        commands.put(CONFIRM_ORDER_COMMAND, new ConfirmOrderCommand());
+        commands.put(GO_TO_CANCEL_ORDERS_PAGE, new GoToCancelOrdersPage());
+        commands.put(CANCEL_ORDER_COMMAND, new CancelOrderCommand());
+        commands.put(GO_TO_COMPLETE_ORDERS_PAGE, new GoToCompleteOrdersPage());
+        commands.put(COMPLETE_ORDER_COMMAND, new CompleteOrderCommand());
+        commands.put(FIND_ALL_RETURN_FORMS_COMMAND, new FindAllReturnFormsCommand());
 
     }
 
@@ -49,6 +60,7 @@ public class CommandProvider{
 
     public static Command getCommand(String commandName) {
         Command command = commands.get(commandName);
+
         if (command != null) {
             return command;
         } else {

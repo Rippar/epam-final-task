@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,9 +23,9 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 
 
 public class CarServiceImpl implements CarService {
-
-    static Logger logger = LogManager.getLogger();
     private static final String TRUE_VALUE = "1";
+    private static final String DATE_PATTERN = "MM/d/yyyy";
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public boolean createNewCar(Map<String, String> carData) throws ServiceException {
@@ -77,7 +79,7 @@ public class CarServiceImpl implements CarService {
         Optional<Car> optionalCar;
 
         if (!carValidator.validateCarId(carData.get(CAR_ID_SESSION))) {
-            logger.info("Car with id " + carData.get(CAR_ID_SESSION) + " has not been found in cars");
+            logger.info("Incorrect car's id: " + carData.get(CAR_ID_SESSION));
             carData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isUpdated;
         }
@@ -192,5 +194,25 @@ public class CarServiceImpl implements CarService {
 
         return isInactivate;
 
+    }
+
+    @Override
+    public List<Car> findAllAvailableCars(Map<String, String> orderData) throws ServiceException {
+        CarDAO carDAO = DAOProvider.getInstance().getCarDAO();
+        List<Car> availableCars;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+        LocalDate pickUpDate = LocalDate.parse(orderData.get(ORDER_PICK_UP_DATE_SESSION), formatter);
+        LocalDate dropOffDate = LocalDate.parse(orderData.get(ORDER_DROP_OFF_DATE_SESSION), formatter);
+
+        try {
+            availableCars = carDAO.findAllAvailableCars(pickUpDate, dropOffDate);
+
+        } catch (DAOException e) {
+            logger.error("Unsuccessful attempt to find all available cars.", e);
+            throw new ServiceException("Unsuccessful attempt to find all available cars.", e);
+        }
+
+        return availableCars;
     }
 }

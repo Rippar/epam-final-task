@@ -42,5 +42,10 @@ Car data ${car_data_session}
 <br/>
 Result: ${add_car_result}
 <br/>
+<hr/>
+<form action="controller">
+    <input type="hidden" name="command" value="gotoaccountpage"/>
+    <input type="submit" value="Return to account's page"/>
+</form>
 </body>
 </html>

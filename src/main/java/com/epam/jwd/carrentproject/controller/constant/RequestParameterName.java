@@ -24,4 +24,11 @@ public class RequestParameterName {
     public static final String NUM_OF_DOORS = "num_of_doors";
     public static final String NUM_OF_SEATS = "num_of_seats";
     public static final String RENTAL_PRICE = "rental_price";
+    public static final String PICK_UP_DATE = "pick_up_date";
+    public static final String DROP_OFF_DATE="drop_off_date";
+    public static final String CAR_ID_TO_ORDER = "car_id_to_order";
+    public static final String ORDER_ID = "order_id";
+    public static final String REASON_FOR_CANCELING = "reason_for_canceling";
+    public static final String DAMAGE_DESCRIPTION= "damage_description";
+    public static final String BILL_VALUE= "bill_value";
 }

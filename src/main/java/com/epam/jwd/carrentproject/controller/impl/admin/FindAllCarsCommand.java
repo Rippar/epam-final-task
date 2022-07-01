@@ -19,7 +19,7 @@ import java.util.List;
 
 public class FindAllCarsCommand implements Command {
 
-    static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -33,8 +33,8 @@ public class FindAllCarsCommand implements Command {
             router = new Router(PagePath.ALL_CARS_PAGE);
 
         } catch (ServiceException e) {
-            logger.error("Try to execute FindAllCarsCommand was failed.", e);
-            throw new CommandException("Try to execute FindAllCarsCommand was failed.", e);
+            logger.error("Try to find all cars was failed.", e);
+            throw new CommandException("Try to find all cars was failed.", e);
         }
         return router;
     }

@@ -17,7 +17,7 @@ public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
 
     public void init() {
-        logger.log(Level.INFO, "----------> Servlet Init :" + this.getServletInfo());
+        logger.log(Level.INFO, "Servlet Init :" + this.getServletInfo());
 
     }
 
@@ -54,7 +54,7 @@ public class Controller extends HttpServlet {
     }
 
     public void destroy() {
-        logger.log(Level.INFO, "----------> Servlet Destroyed :" + this.getServletName());
+        logger.log(Level.INFO, "Servlet Destroyed :" + this.getServletName());
 
     }
 }

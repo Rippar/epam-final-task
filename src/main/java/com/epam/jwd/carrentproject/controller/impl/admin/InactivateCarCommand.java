@@ -20,7 +20,7 @@ import static com.epam.jwd.carrentproject.controller.constant.RequestParameterNa
 
 public class InactivateCarCommand implements Command {
 
-    static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();

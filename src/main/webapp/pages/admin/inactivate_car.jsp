@@ -20,15 +20,14 @@ Fill in the field to inactivate car:
     <input type="submit" name = "sub" value="Inactivate car"/>
     <br/>
 </form>
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="gotoaccountpage"/>
-    <input type="submit" value="Return to account's page"/>
-</form>
-<hr/>
 Car data ${car_data_session}
 <br/>
 Result: ${inactivate_car_result}
 <br/>
+<hr/>
+<form action="controller">
+    <input type="hidden" name="command" value="gotoaccountpage"/>
+    <input type="submit" value="Return to account's page"/>
+</form>
 </body>
 </html>

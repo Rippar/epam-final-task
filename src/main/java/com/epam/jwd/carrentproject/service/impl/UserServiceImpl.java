@@ -20,8 +20,9 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
 public class UserServiceImpl implements UserService {
-    static Logger logger = LogManager.getLogger();
     private static final int CUSTOMER_ROLE_ID = 2;
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public List<User> findAllUsers() throws ServiceException {

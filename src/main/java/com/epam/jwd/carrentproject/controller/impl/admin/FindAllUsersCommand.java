@@ -19,11 +19,10 @@ import java.util.List;
 
 public class FindAllUsersCommand implements Command {
 
-    static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        //session.removeAttribute(SessionAttributeName.UPDATE_USER_STATUS_RESULT); - лишнее?
         UserService userService = ServiceProvider.getInstance().getUserService();
         Router router;
 
@@ -33,8 +32,8 @@ public class FindAllUsersCommand implements Command {
             session.setAttribute(SessionAttributeName.CURRENT_PAGE, Command.extract(request));
             router= new Router(PagePath.ALL_USERS_PAGE);
         } catch (ServiceException e) {
-            logger.error("Try to execute FindAllUsersCommand was failed.", e);
-            throw new CommandException("Try to execute FindAllUsersCommand was failed.", e);
+            logger.error("Try to find all users was failed.", e);
+            throw new CommandException("Try to find all users was failed.", e);
         }
 
         return router;

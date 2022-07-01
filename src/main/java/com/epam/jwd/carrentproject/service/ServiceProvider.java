@@ -1,6 +1,8 @@
 package com.epam.jwd.carrentproject.service;
 
 import com.epam.jwd.carrentproject.service.impl.CarServiceImpl;
+import com.epam.jwd.carrentproject.service.impl.OrderServiceImpl;
+import com.epam.jwd.carrentproject.service.impl.ReturnFormServiceImpl;
 import com.epam.jwd.carrentproject.service.impl.UserServiceImpl;
 
 public class ServiceProvider {
@@ -9,10 +11,11 @@ public class ServiceProvider {
 
     private UserService userService = new UserServiceImpl();
     private CarService carService = new CarServiceImpl();
-    //private CommonService CommonService = new CommonServiceImpl();
-    // и т.д
+    private OrderService orderService = new OrderServiceImpl();
 
-    private ServiceProvider(){};
+    private ReturnFormService returnFormService = new ReturnFormServiceImpl();
+
+    private ServiceProvider(){}
 
     public static ServiceProvider getInstance() {
         return instance;
@@ -32,5 +35,21 @@ public class ServiceProvider {
 
     public void setCarService(CarService carService) {
         this.carService = carService;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
+    }
+
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    public ReturnFormService getReturnFormService() {
+        return returnFormService;
+    }
+
+    public void setReturnFormService(ReturnFormService returnFormService) {
+        this.returnFormService = returnFormService;
     }
 }

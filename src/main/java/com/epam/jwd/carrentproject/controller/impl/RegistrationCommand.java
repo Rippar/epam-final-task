@@ -18,9 +18,7 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
 public class RegistrationCommand implements Command {
-
-    static Logger logger = LogManager.getLogger();
-
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -36,13 +34,13 @@ public class RegistrationCommand implements Command {
             boolean result = userService.createNewAccount(userData);
             int sizeAfter = userData.size();
 
-            if (sizeBefore == sizeAfter) {
-                session.removeAttribute(USER_DATA_SESSION);
-
-            } else {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(USER_DATA_SESSION, userData);
+
             }
+
             session.setAttribute(REGISTRATION_RESULT, result);
+
             if(result) {
                 session.setAttribute(CURRENT_PAGE, PagePath.MAIN_PAGE);
                 router = new Router(PagePath.MAIN_PAGE);

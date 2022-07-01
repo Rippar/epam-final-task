@@ -13,20 +13,28 @@ import static com.epam.jwd.carrentproject.controller.constant.RequestParameterNa
 
 public class CarValidatorImpl implements CarValidator {
 
-    static Logger logger = LogManager.getLogger();
-
     private static final String CAR_BRAND_REGEX = "[а-яё\\p{Lower}]{1,15}";
-    private static final String CAR_MODEL_REGEX = "^[\\w\\sА-я\\.\\-]{1,20}$";
+    private static final String CAR_MODEL_REGEX = "^[\\w\\sА-я.\\-]{1,20}$";
     private static final String PRICE_REGEX = "^\\d+([.]\\d{1,2})?$";
     private static final String BOOLEAN_CHECK = "[01]";
     private static final String NUM_OF_DOORS_CHECK = "[2345]";
     private static final String NUM_OF_SEATS_CHECK = "[245678]";
     private static final String INTEGER_CHECK = "\\d+";
-    private static final List<String> CAR_CLASSES = Arrays.asList("премиум", "стандарт", "бизнес", "компакт", "эконом");
-    private static final List<String> CAR_BODIES = Arrays.asList("седан", "универсал", "кроссовер", "минивэн",
-            "хэтчбэк", "купе", "кабриолет");
+    private static final String PREMIUM_CLASS = "премиум";
+    private static final String STANDART_CLASS = "стандарт";
+    private static final String BUSINESS_CLASS = "бизнес";
+    private static final String COMPACT_CLASS = "компакт";
+    private static final String ECONOMY_CLASS = "эконом";
+    private static final String SALOON_BODY = "седан";
+    private static final String WAGON_BODY = "универсал";
+    private static final String SUV_BODY = "кроссовер";
+    private static final String MINIVAN_BODY = "минивэн";
+    private static final String HATCHBACK_BODY = "хэтчбэк";
+    private static final String COUPE_BODY = "купе";
+    private static final String CONVERTIBLE_BODY = "кабриолет";
+    private static final CarValidator instance = new CarValidatorImpl();
 
-    private static CarValidator instance = new CarValidatorImpl();
+    private static final Logger logger = LogManager.getLogger();
 
     private CarValidatorImpl() {
 
@@ -53,6 +61,12 @@ public class CarValidatorImpl implements CarValidator {
         String numOfSeats = carData.get(NUM_OF_SEATS_SESSION);
         String rentalPrice = carData.get(RENTAL_PRICE_SESSION);
 
+        List<String> carClasses = Arrays.asList(PREMIUM_CLASS, STANDART_CLASS, BUSINESS_CLASS,
+                COMPACT_CLASS, ECONOMY_CLASS);
+
+        List<String> carBodies = Arrays.asList(SALOON_BODY, WAGON_BODY, SUV_BODY, MINIVAN_BODY,
+                HATCHBACK_BODY, COUPE_BODY, CONVERTIBLE_BODY);
+
         boolean isValid = true;
 
         if (carBrand == null || !carBrand.matches(CAR_BRAND_REGEX)) {
@@ -67,14 +81,14 @@ public class CarValidatorImpl implements CarValidator {
             isValid = false;
         }
 
-        if (carClass == null || !CAR_CLASSES.stream().anyMatch(element -> element.contains(carClass))) {
+        if (carClass == null || carClasses.stream().noneMatch(element -> element.contains(carClass))) {
 
             carData.put(WRONG_CAR_CLASS_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid car class.");
             isValid = false;
         }
 
-        if (carBody == null || !CAR_BODIES.stream().anyMatch(element -> element.contains(carBody))) {
+        if (carBody == null || carBodies.stream().noneMatch(element -> element.contains(carBody))) {
 
             carData.put(WRONG_CAR_BODY_SESSION, WRONG_DATA_MARKER);
             logger.info("Invalid car body.");

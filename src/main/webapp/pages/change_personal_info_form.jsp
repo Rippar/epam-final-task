@@ -34,11 +34,12 @@ Fill in the fields to update user information:
     <input type="submit" name = "sub" value="Update info"/>
     <br/>
 </form>
+Change personal info result: ${update_personal_info_result}
+<br/>
 <hr/>
-User data ${user_data_session}
-<br/>
-Result: ${update_personal_info_result}
-<br/>
-If result = false, please return to the account, refresh the page and try again
+<form action="controller">
+    <input type="hidden" name="command" value="gotoaccountpage"/>
+    <input type="submit" value="Return to account's page"/>
+</form>
 </body>
 </html>

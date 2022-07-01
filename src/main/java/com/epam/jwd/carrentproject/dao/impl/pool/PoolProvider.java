@@ -24,9 +24,7 @@ public class PoolProvider {
 
 
     public static PoolProvider getInstance() {
-        //lock
         return instance;
-        //unlock
     }
 
     public ConnectionPool getConnectionPool() {

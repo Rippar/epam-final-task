@@ -1,7 +1,5 @@
 package com.epam.jwd.carrentproject.controller;
 
-import com.epam.jwd.carrentproject.controller.constant.PagePath;
-//Router для того, чтобы возвращать его из execute() вместо String
 public class Router {
     private String page;
     private Type type = Type.FORWARD;
@@ -16,7 +14,7 @@ public class Router {
     }
 
     public enum Type{
-        FORWARD, REDIRECT;
+        FORWARD, REDIRECT
     }
 
     public String getPage() {

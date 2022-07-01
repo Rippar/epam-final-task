@@ -13,17 +13,20 @@
 <body>
 CUSTOMER'S ACCOUNT PAGE
 <hr/>
+Personal data change:
+<br/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="gotochangepassword"/>
     <input type="submit" value="Change password"/>
 </form>
-<hr/>
-<hr/>
+
 <form action="controller">
     <input type="hidden" name="command" value="gotochangepersonalinfo"/>
     <input type="submit" value="Change personal info"/>
 </form>
 <hr/>
+<br/>
 <form action="controller">
     <input type="hidden" name="command" value="gotohomepage"/>
     <input type="submit" value="Return to home page"/>

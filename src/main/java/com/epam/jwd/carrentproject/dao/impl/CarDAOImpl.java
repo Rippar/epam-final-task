@@ -7,34 +7,40 @@ import com.epam.jwd.carrentproject.dao.impl.pool.PoolProvider;
 import com.epam.jwd.carrentproject.dao.mapper.Mapper;
 import com.epam.jwd.carrentproject.dao.mapper.impl.CarMapper;
 import com.epam.jwd.carrentproject.entity.Car;
+import com.epam.jwd.carrentproject.entity.OrderStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class CarDAOImpl implements CarDAO {
-    static Logger logger = LogManager.getLogger();
     private static final String INSERT_CAR =
             "INSERT INTO cars (car_brand, car_model, car_class, car_body, auto_transmission, air_conditioning, " +
                     "num_of_doors, num_of_seats, rental_price, is_active) values (?,?,?,?,?,?,?,?,?,?)";
 
-    private static final String UPDATE_CAR_INFO = "UPDATE cars SET car_brand=?, car_model=?, car_class=?, car_body=?, " +
-            "auto_transmission=?, air_conditioning=?, num_of_doors=?, num_of_seats=?, rental_price=?  WHERE car_id=?";
+    private static final String UPDATE_CAR_INFO = "UPDATE cars SET car_brand=?, car_model=?, car_class=?, car_body=?," +
+            " auto_transmission=?, air_conditioning=?, num_of_doors=?, num_of_seats=?, rental_price=?  WHERE car_id=?";
 
     private static final String SELECT_CAR_BY_ID =
-            "SELECT car_id, car_brand, car_model, car_class, car_body, auto_transmission, air_conditioning, " +
-                    "num_of_doors, num_of_seats, rental_price, is_active FROM cars WHERE car_id =?";
+            "SELECT * FROM cars WHERE car_id =?";
 
     private static final String SELECT_ALL_CARS =
-            "SELECT car_id, car_brand, car_model, car_class, car_body, auto_transmission, air_conditioning, " +
-                    "num_of_doors, num_of_seats, rental_price, is_active FROM cars";
+            "SELECT * FROM cars";
 
     private static final String INACTIVATE_CAR = "UPDATE cars SET is_active = 0 WHERE car_id=?";
+
+    private static final String SELECT_ALL_AVAILABLE_CARS = "SELECT * FROM cars WHERE NOT EXISTS (SELECT order_id " +
+            "FROM order_forms WHERE cars.car_id = order_forms.car_id AND order_forms.pick_up_date  <= ? AND " +
+            "order_forms.drop_off_date >= ? AND (order_forms.status =? OR order_forms.status=?) OR cars.is_Active =0)";
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public List<Car> findAll() throws DAOException {
@@ -152,5 +158,30 @@ public class CarDAOImpl implements CarDAO {
         }
         return optionalCar;
 
+    }
+
+    @Override
+    public List<Car> findAllAvailableCars(LocalDate pickUpDate, LocalDate dropOffDate) throws DAOException {
+        List<Car> availableCarList;
+        PoolProvider poolProvider = PoolProvider.getInstance();
+        try (Connection connection = poolProvider.getConnectionPool().takeConnection(); PreparedStatement statement =
+                connection.prepareStatement(SELECT_ALL_AVAILABLE_CARS)) {
+
+            statement.setDate(1, Date.valueOf(dropOffDate));
+            statement.setDate(2, Date.valueOf(pickUpDate));
+            statement.setString(3, OrderStatus.BOOKED_STATUS);
+            statement.setString(4, OrderStatus.CONFIRMED_STATUS);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            Mapper<Car> mapper = CarMapper.getInstance();
+            availableCarList = mapper.retrieve(resultSet);
+
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("Error has occurred while finding available cars. ", e);
+            throw new DAOException("Error has occurred while finding available cars. ", e);
+
+        }
+        return availableCarList;
     }
 }
