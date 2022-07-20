@@ -32,6 +32,7 @@ public class CompleteOrderCommand implements Command {
         OrderService orderService = ServiceProvider.getInstance().getOrderService();
         ReturnFormService returnFormService = ServiceProvider.getInstance().getReturnFormService();
 
+
         Map<String, String> returnFormData = new HashMap<>();
         session.setAttribute(RETURN_FORM_DATA_SESSION, returnFormData);
 
@@ -39,7 +40,9 @@ public class CompleteOrderCommand implements Command {
         List<Order> confirmedOrders = (List<Order>) session.getAttribute(CONFIRMED_ORDERS_SESSION);
         orderData.put(ORDER_STATUS_SESSION, OrderStatus.COMPLETED_STATUS);
 
+        removeSessionResults(session);
         removeTempData(orderData, returnFormData);
+
         updateOrderDataFromRequest(request, orderData, returnFormData);
         Router router;
 
@@ -107,6 +110,10 @@ public class CompleteOrderCommand implements Command {
         returnFormData.put(DAMAGE_DESCRIPTION_SESSION, request.getParameter(DAMAGE_DESCRIPTION));
         returnFormData.put(BILL_VALUE_SESSION, request.getParameter(BILL_VALUE));
 
+    }
 
+    private void removeSessionResults(HttpSession session) {
+        session.removeAttribute(COMPLETE_ORDER_RESULT);
+        session.removeAttribute(ADD_RETURN_FORM_RESULT);
     }
 }

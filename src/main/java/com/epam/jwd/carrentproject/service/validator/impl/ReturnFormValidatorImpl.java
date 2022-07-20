@@ -11,7 +11,7 @@ import static com.epam.jwd.carrentproject.controller.constant.RequestParameterNa
 
 public class ReturnFormValidatorImpl implements ReturnFormValidator {
 
-    private static final String VALUE_REGEX = "^\\d+([.]\\d{1,2})?$";
+    private static final String VALUE_REGEX = "^\\d{0,3}([.]\\d{1,2})?$";
     private static final int MAX_DESCRIPTION_LENGTH = 100;
 
     private static final Logger logger = LogManager.getLogger();

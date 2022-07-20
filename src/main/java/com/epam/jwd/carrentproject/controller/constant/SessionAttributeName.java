@@ -6,6 +6,7 @@ public class SessionAttributeName {
     public static final String UPDATE_USER_STATUS_RESULT = "update_user_status_result";
     public static final String USER_ID_SESSION = "user_id_session";
     public static final String LOGIN_SESSION = "login_session";
+    public static final String LOGIN_RESULT = "login_result";
     public static final String ROLE_SESSION = "role_session";
     public static final String IS_ACTIVE_USER_SESSION = "is_active_user_session";
     public static final String PASSWORD_SESSION = "password_session";
@@ -91,5 +92,9 @@ public class SessionAttributeName {
     public static final String WRONG_BILL_VALUE_SESSION = "wrong_bill_value_session";
     public static final String RETURN_FORM_DATA_SESSION = "return_form_data_session";
     public static final String ADD_RETURN_FORM_RESULT = "add_return_form_result";
+    public static final String LANGUAGE_SESSION = "language_session";
+    public static final String CARS_LIST_TO_INACTIVATE_SESSION = "cars_list_to_inactivate";
+    public static final String USERS_LIST_TO_INACTIVATE_SESSION = "users_list_to_inactivate";
+    public static final String CARS_LIST_TO_UPDATE_SESSION = "cars_list_to_update";
 
 }

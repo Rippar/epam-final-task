@@ -4,6 +4,7 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
+import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.entity.Car;
 import com.epam.jwd.carrentproject.service.CarService;
 import com.epam.jwd.carrentproject.service.OrderService;
@@ -47,6 +48,8 @@ public class GoToOrderForm implements Command {
             session.setAttribute(AVAILABLE_CARS_LIST_SESSION, availableCarsList);
 
             orderData.put(USER_ID_SESSION, String.valueOf(session.getAttribute(USER_ID_SESSION)));
+            String currentPage = Command.extract(request);
+            session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
             return new Router(PagePath.ORDER_FORM);
 
         } else {

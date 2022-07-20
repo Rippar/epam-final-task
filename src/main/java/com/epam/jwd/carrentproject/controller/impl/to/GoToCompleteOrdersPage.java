@@ -17,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
+
 public class GoToCompleteOrdersPage implements Command {
 
     private static final Logger logger = LogManager.getLogger();
@@ -25,7 +27,8 @@ public class GoToCompleteOrdersPage implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         OrderService orderService = ServiceProvider.getInstance().getOrderService();
-
+        session.removeAttribute(COMPLETE_ORDER_RESULT);
+        session.removeAttribute(ADD_RETURN_FORM_RESULT);
         List<Order> orders;
 
         try {
@@ -37,6 +40,8 @@ public class GoToCompleteOrdersPage implements Command {
             throw new CommandException("Unsuccessful attempt to get the list of orders by status.", e);
         }
 
+        String currentPage = Command.extract(request);
+        session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
         session.setAttribute(SessionAttributeName.CONFIRMED_ORDERS_SESSION, orders);
         return new Router(PagePath.COMPLETE_ORDERS_PAGE);
     }

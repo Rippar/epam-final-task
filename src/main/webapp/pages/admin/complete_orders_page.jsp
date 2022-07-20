@@ -7,42 +7,88 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-Confirmed orders:
-</br>
-<c:forEach var="order" items="${confirmed_orders_session}">
-    <tr>
-        <td><c:out value="${ order }"/></td>
-        </br>
-    </tr>
-</c:forEach>
-<hr>
-Please insert the id of the order to make it complete:
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="completeorder"/>
-    Order's id: <input type="text" name="order_id" value=""/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${language_session}" scope="session"/>
+<fmt:bundle basename="properties.pagecontent">
+
+    <fmt:message key="title.fulfillment_orders_lowercase" var="fulfillment_orders_lowercase"/>
+    <fmt:message key="title.fulfillment_orders" var="fulfillment_orders"/>
+    <fmt:message key="field.fulfill_order" var="fulfill_order"/>
+    <fmt:message key="field.damage_description" var="damage_description"/>
+    <fmt:message key="title.order_id" var="order_id"/>
+    <fmt:message key="title.car_id" var="car_id"/>
+    <fmt:message key="field.pick_up_date" var="pick_up_date"/>
+    <fmt:message key="field.drop_off_date" var="drop_off_date"/>
+    <fmt:message key="title.order_status" var="order_status"/>
+    <fmt:message key="field.bill_value" var="bill_value"/>
+    <fmt:message key="field.fulfill_order" var="fulfill_order"/>
+    <fmt:message key="button.fulfill_order" var="fulfill_order_button"/>
+    <fmt:message key="message.fulfillment_order_failed" var="fulfillment_order_failed"/>
+    <fmt:message key="message.fulfillment_order_success" var="fulfillment_order_success"/>
+    <fmt:message key="message.creation_return_form_failed" var="creation_return_form_failed"/>
+    <fmt:message key="message.creation_return_form_success" var="creation_return_form_success"/>
+    <fmt:message key="message.cancel_order_result" var="creation_return_form_success"/>
+    <fmt:message key="message.price_validation" var = "price_validation"/>
+
+    <html>
+    <head>
+        <title>${fulfillment_orders_lowercase}</title>
+    </head>
+    <body>
+    <jsp:include page="../common/fragment/header.jsp"></jsp:include>
+    <h4>${fulfillment_orders}</h4>
+    </br>
+    <c:forEach var="order" items="${confirmed_orders_session}">
+        <tr>
+            <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
+            <td><c:out value="${car_id} ${order.getCarId()},"/></td>
+            <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
+            <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
+            <td><c:out value="${order_status} ${order.getStatus()};"/></td>
+            </br>
+        </tr>
+    </c:forEach>
     <br/>
-    Damage description (if necessary): <input type="text" name="damage_description" value=""/>
-    </br>
-    Additional bill amount (if necessary): <input type="text" name="bill_value" pattern="^\d+([.]\d{1,2})?$"
-                                                  title="Bill value must be a number" value=""/>
-    </br>
-    <input type="submit" value="make the order complete"/>
-</form>
-<br/>
-Complete order result: ${complete_order_result}
-<br/>
-Create return form result: ${add_return_form_result}
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="gotoaccountpage"/>
-    <input type="submit" value="Return to account's page"/>
-</form>
-</body>
-</body>
-</html>
+    <b>${fulfill_order}</b>
+    <br/>
+    <form action="controller">
+        <input type="hidden" name="command" value="completeorder"/>
+        ${order_id}
+        <br/>
+        <input type="text" name="order_id"
+                           pattern="\d+" title="<fmt:message key="message.id_validation"/>"
+                           value="">
+        <br/>
+        <br/>
+        ${damage_description}
+        <br/>
+        <input type="text" name="damage_description" value=""/>
+        <br/>
+        <br/>
+        ${bill_value}
+        <br/>
+        <input type="text" name="bill_value" pattern="^\d{0,3}([.]\d{1,2})?$"
+                                                      title="${price_validation}" value=""/>
+        <br/>
+        <br/>
+        <input type="submit" value="${fulfill_order_button}"/>
+    </form>
+    <br/>
+    <c:if test="${complete_order_result == false}">
+        <strong>${fulfillment_order_failed}</strong>
+    </c:if>
+    <c:if test="${complete_order_result == true}">
+        <strong>${fulfillment_order_success}</strong>
+    </c:if>
+    <br/>
+    <c:if test="${add_return_form_result == false}">
+        <strong>${creation_return_form_failed}</strong>
+    </c:if>
+    <c:if test="${add_return_form_result == true}">
+        <strong>${creation_return_form_success}</strong>
+    </c:if>
+    <br/>
+    <jsp:include page="../common/fragment/footer.jsp"></jsp:include>
+    </body>
+    </html>
+</fmt:bundle>

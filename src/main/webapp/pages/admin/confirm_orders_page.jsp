@@ -7,33 +7,60 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-Booked orders:
-</br>
-<c:forEach var="order" items="${booked_orders_session}" >
-    <tr>
-        <td><c:out value="${ order }" /></td>
-        </br>
-    </tr>
-</c:forEach>
-<hr>
-Please insert the id of the order to confirm it:
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="confirmorder"/>
-    <input type="text" name = "order_id" value=""/>
-    <input type="submit" value="confirm the order"/>
-</form>
-<br/>
-Confirm order result: ${confirm_order_result}
-<hr>
-<form action="controller">
-    <input type="hidden" name="command" value="gotoaccountpage"/>
-    <input type="submit" value="Return to account's page"/>
-</form>
-</body>
-</html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${language_session}" scope="session"/>
+<fmt:bundle basename="properties.pagecontent">
+
+    <fmt:message key="title.confirmation_orders_lowercase" var="confirmation_orders_lowercase"/>
+    <fmt:message key="title.confirmation_orders" var="confirmation_orders"/>
+    <fmt:message key="title.id" var="order_id"/>
+    <fmt:message key="title.car_id" var="car_id"/>
+    <fmt:message key="field.pick_up_date" var="pick_up_date"/>
+    <fmt:message key="field.drop_off_date" var="drop_off_date"/>
+    <fmt:message key="title.order_status" var="order_status"/>
+    <fmt:message key="field.cancel_order" var="cancel_order"/>
+    <fmt:message key="field.confirm_order" var="confirm_order"/>
+    <fmt:message key="button.confirm_order" var="confirm"/>
+    <fmt:message key="message.confirmation_order_failed" var="failed"/>
+    <fmt:message key="message.confirmation_order_success" var="success"/>
+
+
+    <html>
+    <head>
+        <title>${confirmation_orders_lowercase}</title>
+    </head>
+    <body>
+    <jsp:include page="../common/fragment/header.jsp"></jsp:include>
+    <h4>${confirmation_orders}</h4>
+    <c:forEach var="order" items="${booked_orders_session}">
+        <tr>
+            <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
+            <td><c:out value="${car_id} ${order.getCarId()},"/></td>
+            <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
+            <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
+            <td><c:out value="${order_status} ${order.getStatus()};"/></td>
+            </br>
+        </tr>
+    </c:forEach>
+    <br>
+        ${confirm_order}
+    <br/>
+    <form action="controller">
+        <input type="hidden" name="command" value="confirmorder"/>
+        <input type="text" name="order_id"
+               pattern="\d+" title="<fmt:message key="message.id_validation"/>"
+               value="">
+        <input type="submit" value="${confirm}"/>
+    </form>
+    <br/>
+    <c:if test="${confirm_order_result == false}">
+        <strong>${failed}</strong>
+    </c:if>
+    <c:if test="${confirm_order_result == true}">
+        <strong>${success}</strong>
+    </c:if>
+    <br/>
+    <jsp:include page="../common/fragment/footer.jsp"></jsp:include>
+    </body>
+    </html>
+</fmt:bundle>

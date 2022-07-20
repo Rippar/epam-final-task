@@ -4,6 +4,7 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
+import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.entity.Order;
 import com.epam.jwd.carrentproject.service.OrderService;
 import com.epam.jwd.carrentproject.service.ServiceException;
@@ -30,6 +31,7 @@ public class GoToUserOrdersPage implements Command {
 
         Map<String, String> orderData = new HashMap<>();
         session.setAttribute(ORDER_DATA_SESSION, orderData);
+        session.removeAttribute(CANCEL_ORDER_RESULT);
 
         List<Order> userOrders;
 
@@ -40,6 +42,8 @@ public class GoToUserOrdersPage implements Command {
             throw new CommandException("Unsuccessful attempt to get the list of user's orders.", e);
         }
 
+        String currentPage = Command.extract(request);
+        session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
         session.setAttribute(USER_ORDERS_SESSION, userOrders);
         return new Router(PagePath.USER_ORDERS_PAGE);
     }

@@ -11,15 +11,19 @@ import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
+
 public class GoToLoginPageCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
+        session.removeAttribute(LOGIN_RESULT);
         Map<String, String> userData = new HashMap<>();
-        session.setAttribute(SessionAttributeName.USER_DATA_SESSION, userData);
+
+        session.setAttribute(USER_DATA_SESSION, userData);
         String currentPage = Command.extract(request);
-        session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
+        session.setAttribute(CURRENT_PAGE, currentPage);
         return new Router(PagePath.LOGIN_PAGE);
     }
 }

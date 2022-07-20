@@ -38,6 +38,7 @@ public class CommandName {
     public static final String GO_TO_COMPLETE_ORDERS_PAGE = "gotocompleteorderspage";
     public static final String COMPLETE_ORDER_COMMAND = "completeorder";
     public static final String FIND_ALL_RETURN_FORMS_COMMAND = "findallreturnforms";
+    public static final String CHANGE_LANGUAGE_COMMAND = "changelanguagecommand";
 
 
 

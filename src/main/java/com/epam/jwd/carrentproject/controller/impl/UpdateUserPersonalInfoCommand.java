@@ -4,6 +4,7 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
+import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.ServiceProvider;
 import com.epam.jwd.carrentproject.service.UserService;
@@ -29,7 +30,6 @@ public class UpdateUserPersonalInfoCommand implements Command {
         updateUserDataFromRequest(request, userData);
         userData.put(LOGIN_SESSION, (String) session.getAttribute(LOGIN_SESSION));
 
-
         UserService userService = ServiceProvider.getInstance().getUserService();
         Router router;
 
@@ -43,8 +43,6 @@ public class UpdateUserPersonalInfoCommand implements Command {
             }
 
             session.setAttribute(UPDATE_PERSONAL_INFO_RESULT, result);
-
-            session.setAttribute(CURRENT_PAGE, PagePath.CHANGE_PERSONAL_INFO_FORM);
             router = new Router(PagePath.CHANGE_PERSONAL_INFO_FORM);
 
         } catch (ServiceException e) {

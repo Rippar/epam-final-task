@@ -10,8 +10,8 @@ import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeNa
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
 public class UserValidatorImpl implements UserValidator {
-    private static final String LOGIN_REGEX = "[\\p{Alpha}][\\p{Alpha}\\d]{4,29}";
-    private static final String PASSWORD_REGEX = "^[\\wА-я.\\-]{3,45}$";
+    private static final String LOGIN_REGEX = "[\\p{Alpha}][\\p{Alpha}\\d]{4,15}";
+    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$";
     private static final String NAME_REGEX = "[А-Я\\p{Upper}][а-яё\\p{Lower}]{1,15}";
     private static final String SURNAME_REGEX = "[А-Я\\p{Upper}][а-я\\p{Lower}]{1,20}";
     private static final String EMAIL_REGEX = "(([\\p{Alpha}\\d._]+){5,25}@([\\p{Lower}]+){3,7}\\.([\\p{Lower}]+){2," +

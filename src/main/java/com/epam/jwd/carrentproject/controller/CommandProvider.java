@@ -52,6 +52,7 @@ public class CommandProvider{
         commands.put(GO_TO_COMPLETE_ORDERS_PAGE, new GoToCompleteOrdersPage());
         commands.put(COMPLETE_ORDER_COMMAND, new CompleteOrderCommand());
         commands.put(FIND_ALL_RETURN_FORMS_COMMAND, new FindAllReturnFormsCommand());
+        commands.put(CHANGE_LANGUAGE_COMMAND, new ChangeLanguageCommand());
 
     }
 

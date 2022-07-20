@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Dmitry
-  Date: 26.06.2022
-  Time: 15:11
+  Date: 27.06.2022
+  Time: 12:03
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,8 +11,6 @@
 <fmt:setLocale value="${language_session}" scope="session"/>
 <fmt:bundle basename="properties.pagecontent">
 
-    <fmt:message key="title.list_all_cars_lowercase" var = "list_all_cars_lowercase"/>
-    <fmt:message key="title.list_all_cars" var = "list_all_cars"/>
     <fmt:message key="title.order_page_lowercase" var = "order_page"/>
     <fmt:message key="title.id" var = "car_id"/>
     <fmt:message key="title.car_brand" var = "car_brand"/>
@@ -27,15 +25,17 @@
     <fmt:message key="title.num_of_doors" var = "num_of_doors"/>
     <fmt:message key="title.num_of_seats" var = "num_of_seats"/>
     <fmt:message key="title.rental_price" var = "rental_price"/>
-    <fmt:message key="title.active" var = "car_active"/>
+
+
+    <!DOCTYPE html>
     <html>
     <head>
-        <title>${list_all_cars_lowercase}</title>
+        <title>${order_page}</title>
     </head>
     <body>
-    <jsp:include page="../common/fragment/header.jsp"></jsp:include>
-    <h4>${list_all_cars}</h4>
-    <c:forEach var="car" items="${cars_list}">
+    <jsp:include page="fragment/header.jsp"></jsp:include>
+    <h4><fmt:message key="title.order_page"/></h4>
+    <c:forEach var="car" items="${available_cars_list_session}">
         <tr>
             <td><c:out value="${car_id} ${car.getCarId()},"/></td>
             <td><c:out value="${car_brand} ${car.getCarBrand()},"/></td>
@@ -61,19 +61,23 @@
             <td><c:out value="${num_of_doors} ${car.getNumOfDoors()},"/></td>
             <td><c:out value="${num_of_seats} ${car.getNumOfSeats()},"/></td>
             <td><c:out value="${rental_price} ${car.getRentalPrice()};"/></td>
-            <td> ${car_active}
-                <c:if test="${car.isActive() == false}">
-                    ${no}
-                </c:if>
-                <c:if test="${car.isActive() == true}">
-                    ${yes}
-                </c:if>
-            </td>
+
             </br>
         </tr>
     </c:forEach>
     <br/>
-    <jsp:include page="../common/fragment/footer.jsp"></jsp:include>
+    <form action="controller">
+        <input type="hidden" name="command" value="addorder"/>
+        <fmt:message key="field.order_id"/> <input type="text" name="car_id_to_order" value="">
+        <br/>
+        <input type="submit" name="sub" value="<fmt:message key="button.order"/>"/>
+        <br/>
+    </form>
+    <c:if test="${add_order_result == false}">
+        <strong><fmt:message key="message.incorrect_car_id"/></strong>
+    </c:if>
+    <br/>
+    <jsp:include page="fragment/footer.jsp"></jsp:include>
     </body>
     </html>
 </fmt:bundle>

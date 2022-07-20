@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GoToCancelOrdersPage implements Command {
 
     private static final Logger logger = LogManager.getLogger();
@@ -26,6 +27,7 @@ public class GoToCancelOrdersPage implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         OrderService orderService = ServiceProvider.getInstance().getOrderService();
+        session.removeAttribute(SessionAttributeName.CANCEL_ORDER_RESULT);
 
         List<Order> orders = new ArrayList<>();
 
@@ -38,6 +40,8 @@ public class GoToCancelOrdersPage implements Command {
             throw new CommandException("Unsuccessful attempt to get the list of orders by status.", e);
         }
 
+        String currentPage = Command.extract(request);
+        session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
         session.setAttribute(SessionAttributeName.BOOKED_CONFIRMED_ORDERS_SESSION, orders);
         return new Router(PagePath.CANCEL_ORDERS_PAGE);
     }

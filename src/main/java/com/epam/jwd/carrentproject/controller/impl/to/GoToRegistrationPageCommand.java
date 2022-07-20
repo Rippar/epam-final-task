@@ -16,8 +16,10 @@ public class GoToRegistrationPageCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         session.removeAttribute(SessionAttributeName.REGISTRATION_RESULT);
+
         Map<String, String> userData = new HashMap<>();
         session.setAttribute(SessionAttributeName.USER_DATA_SESSION, userData);
+
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
         return new Router(PagePath.REGISTRATION_PAGE);

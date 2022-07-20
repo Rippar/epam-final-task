@@ -15,7 +15,7 @@ public class CarValidatorImpl implements CarValidator {
 
     private static final String CAR_BRAND_REGEX = "[а-яё\\p{Lower}]{1,15}";
     private static final String CAR_MODEL_REGEX = "^[\\w\\sА-я.\\-]{1,20}$";
-    private static final String PRICE_REGEX = "^\\d+([.]\\d{1,2})?$";
+    private static final String PRICE_REGEX = "^\\d{0,3}([.]\\d{1,2})?$";
     private static final String BOOLEAN_CHECK = "[01]";
     private static final String NUM_OF_DOORS_CHECK = "[2345]";
     private static final String NUM_OF_SEATS_CHECK = "[245678]";
@@ -29,7 +29,7 @@ public class CarValidatorImpl implements CarValidator {
     private static final String WAGON_BODY = "универсал";
     private static final String SUV_BODY = "кроссовер";
     private static final String MINIVAN_BODY = "минивэн";
-    private static final String HATCHBACK_BODY = "хэтчбэк";
+    private static final String HATCHBACK_BODY = "хэтчбек";
     private static final String COUPE_BODY = "купе";
     private static final String CONVERTIBLE_BODY = "кабриолет";
     private static final CarValidator instance = new CarValidatorImpl();

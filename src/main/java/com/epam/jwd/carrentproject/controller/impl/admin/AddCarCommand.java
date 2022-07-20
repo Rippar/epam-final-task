@@ -34,17 +34,12 @@ public class AddCarCommand implements Command {
             boolean result = carService.createNewCar(carData);
             int sizeAfter = carData.size();
 
-            if (sizeBefore == sizeAfter) {
-                //session.removeAttribute(CAR_DATA_SESSION);  оставлять или нет ???
-
-            } else {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(CAR_DATA_SESSION, carData);
             }
 
             session.setAttribute(ADD_CAR_RESULT, result);
 
-
-            session.setAttribute(CURRENT_PAGE, PagePath.ADD_CAR_PAGE);
             router = new Router(PagePath.ADD_CAR_PAGE);
 
 

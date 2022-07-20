@@ -34,7 +34,7 @@ public class PageRedirectSecurityFilter implements Filter {
         adminPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, ADMIN_ACCOUNT_PAGE, ALL_USERS_PAGE,
                 CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, INACTIVATE_USER_PAGE, ADD_CAR_PAGE, UPDATE_CAR_PAGE,
                 ALL_CARS_PAGE, INACTIVATE_CAR_PAGE, ORDER_FORM, PAYMENT_FORM, USER_ORDERS_PAGE, ALL_ORDERS_PAGE,
-                CONFIRM_ORDERS_PAGE,CANCEL_ORDERS_PAGE, COMPLETE_ORDERS_PAGE, ALL_RETURN_FORMS_PAGE);
+                CONFIRM_ORDERS_PAGE, CANCEL_ORDERS_PAGE, COMPLETE_ORDERS_PAGE, ALL_RETURN_FORMS_PAGE);
 
         allPages = new HashSet<>();
         allPages.addAll(guestPages);
@@ -55,7 +55,11 @@ public class PageRedirectSecurityFilter implements Filter {
 
         if (isPageExist) {
             HttpSession session = request.getSession();
-            int roleId = (int) session.getAttribute(SessionAttributeName.CURRENT_ROLE);
+            int roleId = 0;
+
+            if (session.getAttribute(SessionAttributeName.CURRENT_ROLE) != null) {
+                roleId = (int) session.getAttribute(SessionAttributeName.CURRENT_ROLE);
+            }
 
             boolean isAcceptable;
             if (roleId == UserRole.getRoleId(ADMIN_ROLE)) {

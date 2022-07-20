@@ -4,6 +4,7 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
+import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.ServiceProvider;
 import com.epam.jwd.carrentproject.service.UserService;
@@ -27,8 +28,10 @@ public class ChangePasswordCommand implements Command {
         Map<String, String> userData = (Map<String, String>) session.getAttribute(USER_DATA_SESSION);
         removeTempData(userData);
         updateUserDataFromRequest(request, userData);
+
         userData.put(LOGIN_SESSION, (String) session.getAttribute(LOGIN_SESSION));
         userData.put(USER_ID_SESSION, String.valueOf(session.getAttribute(USER_ID_SESSION)));
+
         UserService userService = ServiceProvider.getInstance().getUserService();
         Router router;
 
@@ -37,14 +40,10 @@ public class ChangePasswordCommand implements Command {
             boolean result = userService.changePassword(userData);
             int sizeAfter = userData.size();
 
-            if (sizeBefore == sizeAfter) {
-                session.removeAttribute(USER_DATA_SESSION);
-            } else {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(USER_DATA_SESSION, userData);
             }
             session.setAttribute(CHANGE_PASSWORD_RESULT, result);
-
-            session.setAttribute(CURRENT_PAGE, PagePath.CHANGE_PASSWORD_FORM);
             router = new Router(PagePath.CHANGE_PASSWORD_FORM);
 
 

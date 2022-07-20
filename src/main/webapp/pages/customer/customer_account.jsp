@@ -6,33 +6,29 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-CUSTOMER'S ACCOUNT PAGE
-<hr/>
-Personal data change:
-<br/>
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="gotochangepassword"/>
-    <input type="submit" value="Change password"/>
-</form>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${language_session}" scope="session"/>
+<fmt:bundle basename="properties.pagecontent">
+    <html>
+    <head>
+        <title><fmt:message key="title.client_personal_account_lowercase"/></title>
+    </head>
+    <body>
+    <jsp:include page="../common/fragment/header.jsp"></jsp:include>
+    <h4><fmt:message key="title.client_personal_account"/></h4>
 
-<form action="controller">
-    <input type="hidden" name="command" value="gotochangepersonalinfo"/>
-    <input type="submit" value="Change personal info"/>
-</form>
-<hr/>
-<br/>
-<form action="controller">
-    <input type="hidden" name="command" value="gotohomepage"/>
-    <input type="submit" value="Return to home page"/>
-</form>
-<hr/>
-User data ${user_data_session}
+    <form action="controller">
+        <input type="hidden" name="command" value="gotochangepassword"/>
+        <input type="submit" value="<fmt:message key="button.changing_password"/>"/>
+    </form>
 
-</body>
-</html>
+    <form action="controller">
+        <input type="hidden" name="command" value="gotochangepersonalinfo"/>
+        <input type="submit" value="<fmt:message key="button.changing_personal_info"/>"/>
+    </form>
+    <br/>
+    <jsp:include page="../common/fragment/footer.jsp"></jsp:include>
+    </body>
+    </html>
+</fmt:bundle>

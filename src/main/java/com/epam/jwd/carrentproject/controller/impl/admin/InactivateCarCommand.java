@@ -58,7 +58,6 @@ public class InactivateCarCommand implements Command {
 
     private void removeTempData(Map<String, String> carData) {
         carData.remove(WRONG_ID_SESSION);
-
     }
 
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> carData) {

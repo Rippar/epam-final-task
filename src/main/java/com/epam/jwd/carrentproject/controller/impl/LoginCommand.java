@@ -38,12 +38,7 @@ public class LoginCommand implements Command {
             if(optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 session.removeAttribute(USER_DATA_SESSION);
-//                session.setAttribute(CURRENT_USER_ID, user.getUserId());
-//                session.setAttribute(CURRENT_LOGIN_SESSION, user.getLogin());
                 session.setAttribute(CURRENT_ROLE, user.getUserRoleId());
-//                session.setAttribute(CURRENT_USER_IS_ACTIVE, user.isActive());
-//                session.setAttribute(CURRENT_EMAIL_SESSION, user.getEmail());
-//                session.setAttribute(CURRENT_PASSPORT_SESSION, user.getPassportNum());
                 session.setAttribute(USER_ID_SESSION, user.getUserId());
                 session.setAttribute(LOGIN_SESSION, user.getLogin());
                 session.setAttribute(FIRST_NAME_SESSION, user.getFirstName());
@@ -54,11 +49,13 @@ public class LoginCommand implements Command {
                 session.setAttribute(PASSPORT_SESSION, user.getPassportNum());
                 request.setAttribute(RequestAttributeName.USER_ATTRIBUTE, user.getFirstName());
                 session.setAttribute(CURRENT_PAGE, PagePath.HOME_PAGE);
+                session.setAttribute(LOGIN_RESULT, true);
                 router= new Router(PagePath.HOME_PAGE);
 
             } else {
                 session.setAttribute(USER_DATA_SESSION, userData);
                 session.setAttribute(CURRENT_PAGE, PagePath.LOGIN_PAGE);
+                session.setAttribute(LOGIN_RESULT, false);
                 router = new Router(PagePath.LOGIN_PAGE);
             }
 
