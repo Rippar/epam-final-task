@@ -1,5 +1,11 @@
 package com.epam.jwd.carrentproject.dao;
 
+/**
+ * The {@code ColumnName} class represents the container for database table columns. The class does not contain
+ * functionality, only constants.
+ *
+ * @author Dmitry Murzo
+ */
 public class ColumnName {
 
     public static final String USER_ID = "user_id";
@@ -8,7 +14,7 @@ public class ColumnName {
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
     public static final String EMAIL = "email";
-    public static final String PASSPORT_NUMBER= "passport_number";
+    public static final String PASSPORT_NUMBER = "passport_number";
     public static final String IS_ACTIVE_USER = "is_active";
     public static final String ROLE_ID = "role_id";
     public static final String CAR_ID = "car_id";
@@ -30,7 +36,6 @@ public class ColumnName {
     public static final String DATE_OF_RETURN = "date_of_return";
     public static final String DAMAGE_DESCRIPTION = "damage_description";
     public static final String BILL_VALUE = "bill_value";
-
 
 
 }

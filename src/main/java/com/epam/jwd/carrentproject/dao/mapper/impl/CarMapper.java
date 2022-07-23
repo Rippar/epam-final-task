@@ -9,10 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.jwd.carrentproject.dao.ColumnName.*;
-public class CarMapper implements Mapper<Car> {
-    private static final CarMapper instance = new CarMapper();
 
-    private CarMapper(){
+/**
+ * The {@code CarMapper} class uses singleton pattern to control the number of mapper objects created.
+ *
+ * @author Dmitry Murzo
+ * @see Mapper
+ */
+public class CarMapper implements Mapper<Car> {
+    private static final CarMapper INSTANCE = new CarMapper();
+
+    private CarMapper() {
 
     }
 
@@ -22,8 +29,9 @@ public class CarMapper implements Mapper<Car> {
      * @return the instance
      */
     public static CarMapper getInstance() {
-        return instance;
+        return INSTANCE;
     }
+
     @Override
     public List<Car> retrieve(ResultSet resultSet) throws SQLException {
         List<Car> cars = new ArrayList<>();

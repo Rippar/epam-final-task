@@ -10,9 +10,15 @@ import java.util.List;
 
 import static com.epam.jwd.carrentproject.dao.ColumnName.*;
 
+/**
+ * The {@code OrderMapper} class uses singleton pattern to control the number of mapper objects created.
+ *
+ * @author Dmitry Murzo
+ * @see Mapper
+ */
 public class OrderMapper implements Mapper<Order> {
 
-    private static final OrderMapper instance = new OrderMapper();
+    private static final OrderMapper INSTANCE = new OrderMapper();
 
     private OrderMapper() {
 
@@ -24,13 +30,14 @@ public class OrderMapper implements Mapper<Order> {
      * @return the instance
      */
     public static OrderMapper getInstance() {
-        return instance;
+        return INSTANCE;
     }
+
     @Override
     public List<Order> retrieve(ResultSet resultSet) throws SQLException {
         List<Order> orders = new ArrayList<>();
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             Order order = new Order.OrderBuilder()
                     .withOrderId(resultSet.getInt(ORDER_ID))
                     .withUserId(resultSet.getInt(USER_ID))

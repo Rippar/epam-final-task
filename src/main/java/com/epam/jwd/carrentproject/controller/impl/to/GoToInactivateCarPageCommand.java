@@ -4,7 +4,6 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
-import com.epam.jwd.carrentproject.controller.constant.RequestAttributeName;
 import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.entity.Car;
 import com.epam.jwd.carrentproject.service.CarService;
@@ -21,9 +20,20 @@ import java.util.Map;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToInactivateCarPage implements Command {
+/**
+ * The {@code GoToInactivateCarPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the inactivate car page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToInactivateCarPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the command to go to the inactivate car page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -38,7 +48,7 @@ public class GoToInactivateCarPage implements Command {
             session.setAttribute(CARS_LIST_TO_INACTIVATE_SESSION, cars);
 
         } catch (ServiceException e) {
-            logger.error("Try to find all cars was failed.", e);
+            LOGGER.error("Try to find all cars was failed.", e);
             throw new CommandException("Try to find all cars was failed.", e);
         }
 

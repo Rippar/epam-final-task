@@ -51,7 +51,7 @@
     <br/>
     <b>${fulfill_order}</b>
     <br/>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="completeorder"/>
         ${order_id}
         <br/>

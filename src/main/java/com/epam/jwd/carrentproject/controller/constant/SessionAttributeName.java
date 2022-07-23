@@ -1,9 +1,14 @@
 package com.epam.jwd.carrentproject.controller.constant;
 
+/**
+ * The {@code SessionAttributeName} class represents the container for session's attribute names.
+ * The class does not contain functionality, only constants.
+ *
+ * @author Dmitry Murzo
+ */
 public class SessionAttributeName {
-    public static final String USER_ATTRIBUTE = "user_name";
-    public static final String CURRENT_PAGE ="current_page";
-    public static final String UPDATE_USER_STATUS_RESULT = "update_user_status_result";
+
+    public static final String CURRENT_PAGE = "current_page";
     public static final String USER_ID_SESSION = "user_id_session";
     public static final String LOGIN_SESSION = "login_session";
     public static final String LOGIN_RESULT = "login_result";
@@ -83,11 +88,11 @@ public class SessionAttributeName {
     public static final String ORDER_STATUS_SESSION = "order_status_session";
     public static final String CONFIRM_ORDER_RESULT = "confirm_order_result";
     public static final String BOOKED_CONFIRMED_ORDERS_SESSION = "booked_confirmed_orders_session";
-    public static final String REASON_FOR_CANCELING_SESSION= "reason_for_canceling_session";
+    public static final String REASON_FOR_CANCELING_SESSION = "reason_for_canceling_session";
     public static final String CONFIRMED_ORDERS_SESSION = "confirmed_orders_session";
     public static final String COMPLETE_ORDER_RESULT = "complete_order_result";
-    public static final String DAMAGE_DESCRIPTION_SESSION= "damage_description_session";
-    public static final String BILL_VALUE_SESSION= "bill_value_session";
+    public static final String DAMAGE_DESCRIPTION_SESSION = "damage_description_session";
+    public static final String BILL_VALUE_SESSION = "bill_value_session";
     public static final String WRONG_DESCRIPTION_SESSION = "wrong_description_session";
     public static final String WRONG_BILL_VALUE_SESSION = "wrong_bill_value_session";
     public static final String RETURN_FORM_DATA_SESSION = "return_form_data_session";

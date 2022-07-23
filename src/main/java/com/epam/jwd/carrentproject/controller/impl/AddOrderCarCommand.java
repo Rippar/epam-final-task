@@ -4,7 +4,6 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
-import com.epam.jwd.carrentproject.controller.constant.RequestAttributeName;
 import com.epam.jwd.carrentproject.entity.Car;
 import com.epam.jwd.carrentproject.service.OrderService;
 import com.epam.jwd.carrentproject.service.ServiceException;
@@ -20,10 +19,18 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
-
+/**
+ * The {@code AddOrderCarCommand} class implements the functional of {@link Command}
+ * The class executes the command to add a new order to the system
+ *
+ * @author Dmitry Murzo
+ */
 public class AddOrderCarCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the add order command, writes an additional info to the order's data and session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
 
@@ -45,21 +52,21 @@ public class AddOrderCarCommand implements Command {
 
             session.setAttribute(ORDER_DATA_SESSION, orderData);
 
-            if (sizeBefore== sizeAfter) {
+            if (sizeBefore == sizeAfter) {
                 paymentDetails = orderService.getPaymentDetails(orderData);
-                updateSessionByPaymentDetails(session, paymentDetails);
-                session.setAttribute(CURRENT_PAGE, PagePath.PAYMENT_FORM);
-                router=new Router(PagePath.PAYMENT_FORM);
+                updateSessionWithPaymentDetails(session, paymentDetails);
+                session.setAttribute(CURRENT_PAGE, PagePath.PAYMENT_PAGE);
+                router = new Router(PagePath.PAYMENT_PAGE);
 
             } else {
                 session.setAttribute(ADD_ORDER_RESULT, result);
-                session.setAttribute(CURRENT_PAGE, PagePath.ORDER_FORM);
-                router=new Router(PagePath.ORDER_FORM);
+                session.setAttribute(CURRENT_PAGE, PagePath.ORDER_PAGE);
+                router = new Router(PagePath.ORDER_PAGE);
             }
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to add new order.", e);
+            LOGGER.error("Unsuccessful attempt to add new order.", e);
             throw new CommandException("Unsuccessful attempt to add new order.", e);
 
         }
@@ -67,17 +74,34 @@ public class AddOrderCarCommand implements Command {
         return router;
     }
 
+    /**
+     * Removes the temporary data from order's data
+     *
+     * @param orderData the order's data
+     */
     private void removeTempData(Map<String, String> orderData) {
         orderData.remove(WRONG_ID_SESSION);
         orderData.remove(WRONG_DATE_SESSION);
     }
 
+    /**
+     * Updates order's data from request
+     *
+     * @param request   a request from controller
+     * @param orderData the order's data
+     */
     private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
         orderData.put(CAR_ID_TO_ORDER_SESSION, request.getParameter(CAR_ID_TO_ORDER));
 
     }
 
-    private void updateSessionByPaymentDetails(HttpSession session, Map<String, String> paymentDetails) {
+    /**
+     * Updates session attributes with payment details
+     *
+     * @param session  a session
+     * @param paymentDetails the collection of payment details
+     */
+    private void updateSessionWithPaymentDetails(HttpSession session, Map<String, String> paymentDetails) {
         session.setAttribute(PAYMENT_SUM_SESSION, paymentDetails.get(PAYMENT_SUM_SESSION));
         session.setAttribute(PAYMENT_NAME_SESSION, paymentDetails.get(PAYMENT_NAME_SESSION));
         session.setAttribute(PAYMENT_SURNAME_SESSION, paymentDetails.get(PAYMENT_SURNAME_SESSION));

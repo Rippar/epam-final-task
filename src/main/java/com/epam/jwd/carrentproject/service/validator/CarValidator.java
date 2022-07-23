@@ -2,10 +2,15 @@ package com.epam.jwd.carrentproject.service.validator;
 
 import java.util.Map;
 
+/**
+ * The {@code CarValidator} interface defines the methods to validate car's data
+ *
+ * @author Dmitry Murzo
+ */
 public interface CarValidator {
 
     /**
-     * Validate car's id for update boolean.
+     * Validates car's id for update.
      *
      * @param id car's id
      * @return the boolean
@@ -13,9 +18,9 @@ public interface CarValidator {
     boolean validateCarId(String id);
 
     /**
-     * Validate car data for create and update boolean.
+     * Validates car's data for create and update.
      *
-     * @param carData the car data
+     * @param carData the car's data
      * @return the boolean
      */
     boolean validateCarData(Map<String, String> carData);

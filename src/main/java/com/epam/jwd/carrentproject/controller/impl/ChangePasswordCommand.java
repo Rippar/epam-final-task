@@ -4,7 +4,6 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
-import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.ServiceProvider;
 import com.epam.jwd.carrentproject.service.UserService;
@@ -18,9 +17,19 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
-
+/**
+ * The {@code ChangePasswordCommand} class implements the functional of {@link Command}
+ * The class executes the command to change the user's password
+ *
+ * @author Dmitry Murzo
+ */
 public class ChangePasswordCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the change password command, writes an additional info to the user's data and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -44,16 +53,21 @@ public class ChangePasswordCommand implements Command {
                 session.setAttribute(USER_DATA_SESSION, userData);
             }
             session.setAttribute(CHANGE_PASSWORD_RESULT, result);
-            router = new Router(PagePath.CHANGE_PASSWORD_FORM);
+            router = new Router(PagePath.CHANGE_PASSWORD_PAGE);
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to update password.", e);
+            LOGGER.error("Unsuccessful attempt to update password.", e);
             throw new CommandException("Unsuccessful attempt to update password.", e);
         }
-        return  router;
+        return router;
     }
 
+    /**
+     * Removes the temporary data from user's data
+     *
+     * @param userData the user's data
+     */
     private void removeTempData(Map<String, String> userData) {
         userData.remove(WRONG_PASSWORD_SESSION);
         userData.remove(WRONG_NEW_PASSWORD_SESSION);
@@ -61,6 +75,12 @@ public class ChangePasswordCommand implements Command {
         userData.remove(WRONG_REPEATED_NEW_PASSWORD_SESSION);
     }
 
+    /**
+     * Updates user's data from request
+     *
+     * @param request  a request from controller
+     * @param userData the user's data
+     */
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
         userData.put(PASSWORD_SESSION, request.getParameter(PASSWORD));
         userData.put(NEW_PASSWORD_SESSION, request.getParameter(NEW_PASSWORD));

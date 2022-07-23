@@ -7,16 +7,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @project car rent project
- * @author Dmitry Murzo
- * The interface Mapper.
+ * The {@code Mapper} interface defines an abstract method which retrieves the list of entities from a database
+ * result set
  *
  * @param <T> the type parameter
+ * @author Dmitry Murzo
  */
 
-public interface Mapper <T extends AbstractEntity>{
+public interface Mapper<T extends AbstractEntity> {
     /**
-     * Retrieve list.
+     * Retrieves the list of entities from the result set.
      *
      * @param resultSet the result set
      * @return the list

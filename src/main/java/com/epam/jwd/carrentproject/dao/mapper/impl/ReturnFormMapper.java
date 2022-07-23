@@ -10,9 +10,15 @@ import java.util.List;
 
 import static com.epam.jwd.carrentproject.dao.ColumnName.*;
 
+/**
+ * The {@code ReturnFormMapper} class uses singleton pattern to control the number of mapper objects created.
+ *
+ * @author Dmitry Murzo
+ * @see Mapper
+ */
 public class ReturnFormMapper implements Mapper<ReturnForm> {
 
-    private static final ReturnFormMapper instance = new ReturnFormMapper();
+    private static final ReturnFormMapper INSTANCE = new ReturnFormMapper();
 
     private ReturnFormMapper() {
 
@@ -24,14 +30,14 @@ public class ReturnFormMapper implements Mapper<ReturnForm> {
      * @return the instance
      */
     public static ReturnFormMapper getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     @Override
     public List<ReturnForm> retrieve(ResultSet resultSet) throws SQLException {
         List<ReturnForm> returnFormList = new ArrayList<>();
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             ReturnForm returnForm = new ReturnForm.ReturnFormBuilder()
                     .withReturnFormId(resultSet.getInt(RETURN_ID))
                     .withOrderId(resultSet.getInt(ORDER_ID))

@@ -20,10 +20,20 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
+/**
+ * The {@code ConfirmOrderCommand} class implements the functional of {@link Command}
+ * The class executes the command to make the exists order confirmed
+ *
+ * @author Dmitry Murzo
+ */
 public class ConfirmOrderCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the confirm order command, writes an additional info to the order's data and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -44,7 +54,7 @@ public class ConfirmOrderCommand implements Command {
 
             session.setAttribute(CONFIRM_ORDER_RESULT, result);
 
-            if (sizeBefore!= sizeAfter) {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(ORDER_DATA_SESSION, orderData);
 
             }
@@ -54,7 +64,7 @@ public class ConfirmOrderCommand implements Command {
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to change order's status.", e);
+            LOGGER.error("Unsuccessful attempt to change order's status.", e);
             throw new CommandException("Unsuccessful attempt to change order's status.", e);
 
         }
@@ -63,10 +73,21 @@ public class ConfirmOrderCommand implements Command {
 
     }
 
+    /**
+     * Removes the temporary data from order's data
+     *
+     * @param orderData the order's data
+     */
     private void removeTempData(Map<String, String> orderData) {
         orderData.remove(WRONG_ID_SESSION);
     }
 
+    /**
+     * Updates order's data from request
+     *
+     * @param request   a request from controller
+     * @param orderData the order's data
+     */
     private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
         orderData.put(ORDER_ID_SESSION, request.getParameter(ORDER_ID));
 

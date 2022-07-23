@@ -4,7 +4,6 @@ import com.epam.jwd.carrentproject.controller.Command;
 import com.epam.jwd.carrentproject.controller.CommandException;
 import com.epam.jwd.carrentproject.controller.Router;
 import com.epam.jwd.carrentproject.controller.constant.PagePath;
-import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.ServiceProvider;
 import com.epam.jwd.carrentproject.service.UserService;
@@ -18,9 +17,20 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
-public class UpdateUserPersonalInfoCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
 
+/**
+ * The {@code UpdateUserPersonalInfoCommand} class implements the functional of {@link Command}
+ * The class executes the command to update the user's personal info in the system
+ *
+ * @author Dmitry Murzo
+ */
+public class UpdateUserPersonalInfoCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the update user's personal info command, writes an additional info to the user's data and
+     * session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -42,16 +52,25 @@ public class UpdateUserPersonalInfoCommand implements Command {
                 session.setAttribute(USER_DATA_SESSION, userData);
             }
 
+            if (result) {
+                updateCurrentSessionWithUserData(request, session);
+            }
+
             session.setAttribute(UPDATE_PERSONAL_INFO_RESULT, result);
-            router = new Router(PagePath.CHANGE_PERSONAL_INFO_FORM);
+            router = new Router(PagePath.CHANGE_PERSONAL_INFO_PAGE);
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to update account's info.", e);
+            LOGGER.error("Unsuccessful attempt to update account's info.", e);
             throw new CommandException("Unsuccessful attempt to update account's info.", e);
         }
         return router;
     }
 
+    /**
+     * Removes the temporary data from user's data
+     *
+     * @param userData the user's data
+     */
     private void removeTempData(Map<String, String> userData) {
         userData.remove(WRONG_FIRST_NAME_SESSION);
         userData.remove(WRONG_LAST_NAME_SESSION);
@@ -59,11 +78,30 @@ public class UpdateUserPersonalInfoCommand implements Command {
         userData.remove(PASSWORD_SESSION);
     }
 
+    /**
+     * Updates user's data from request
+     *
+     * @param request  a request from controller
+     * @param userData the user's data
+     */
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
         userData.put(EMAIL_SESSION, request.getParameter(EMAIL));
         userData.put(FIRST_NAME_SESSION, request.getParameter(FIRST_NAME));
         userData.put(LAST_NAME_SESSION, request.getParameter(LAST_NAME));
         userData.put(PASSWORD_SESSION, request.getParameter(PASSWORD));
+
+    }
+
+    /**
+     * Updates current session with new user's data from request
+     *
+     * @param request a request from controller
+     * @param session a session
+     */
+    private void updateCurrentSessionWithUserData(HttpServletRequest request, HttpSession session) {
+        session.setAttribute(EMAIL_SESSION, request.getParameter(EMAIL));
+        session.setAttribute(FIRST_NAME_SESSION, request.getParameter(FIRST_NAME));
+        session.setAttribute(LAST_NAME_SESSION, request.getParameter(LAST_NAME));
 
 
     }

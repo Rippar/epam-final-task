@@ -16,7 +16,7 @@
     </head>
     <body>
     <jsp:include page="fragment/welcome_header.jsp"></jsp:include>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="registrationuser"/>
 
         <fmt:message key="field.login"/> <input type="text" name="login"

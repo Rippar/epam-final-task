@@ -18,13 +18,19 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code ReturnFormDAOImpl} class implements the functional of {@link ReturnFormDAO}
+ * The class provides access to the underlying database
+ *
+ * @author Dmitry Murzo
+ */
 public class ReturnFormDAOImpl implements ReturnFormDAO {
     private static final String INSERT_RETURN_FORM =
             "INSERT INTO return_forms (order_id, date_of_return, damage_description, bill_value) values (?,?,?,?)";
 
     private static final String SELECT_ALL_RETURN_FORMS = "SELECT * FROM return_forms";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public List<ReturnForm> findAll() throws DAOException {
@@ -38,7 +44,7 @@ public class ReturnFormDAOImpl implements ReturnFormDAO {
             returnForms = mapper.retrieve(resultSet);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding return forms. ", e);
+            LOGGER.error("Error has occurred while finding return forms. ", e);
             throw new DAOException("Error has occurred while finding return forms. ", e);
 
         }
@@ -60,7 +66,7 @@ public class ReturnFormDAOImpl implements ReturnFormDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot add return form to return form's table. ", e);
+            LOGGER.error("Cannot add return form to return form's table. ", e);
             throw new DAOException("Cannot add return form to return form's table. ", e);
         }
 
@@ -68,7 +74,7 @@ public class ReturnFormDAOImpl implements ReturnFormDAO {
     }
 
     @Override
-    public boolean delete(ReturnForm returnForm) throws DAOException {
+    public boolean inactivate(ReturnForm returnForm) throws DAOException {
         throw new UnsupportedOperationException("Deleting return form is unsupported");
     }
 

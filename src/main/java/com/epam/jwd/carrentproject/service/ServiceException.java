@@ -1,5 +1,11 @@
 package com.epam.jwd.carrentproject.service;
 
+/**
+ * The {@code ServiceException} class represents a checked exception from {@link com.epam.jwd.carrentproject.service}
+ *
+ * @author Dmitry Murzo
+ * @see Exception
+ */
 public class ServiceException extends Exception {
     public ServiceException() {
         super();

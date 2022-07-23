@@ -9,6 +9,12 @@ import jakarta.servlet.annotation.WebFilter;
 
 import java.io.IOException;
 
+/**
+ * The {@code EncodingFilter} class implements the functional of {@link Filter}
+ * The class sets content type and character encoding.
+ *
+ * @author Dmitry Murzo
+ */
 
 @WebFilter
 public class EncodingFilter implements Filter {

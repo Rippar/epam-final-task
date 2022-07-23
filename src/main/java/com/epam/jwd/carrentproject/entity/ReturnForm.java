@@ -3,7 +3,10 @@ package com.epam.jwd.carrentproject.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class ReturnForm extends AbstractEntity{
+/**
+ * The {@code ReturnForm} class represents a return form entity
+ */
+public class ReturnForm extends AbstractEntity {
 
     private int returnFormId;
     private int orderId;
@@ -118,7 +121,7 @@ public class ReturnForm extends AbstractEntity{
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() +" {" +
+        return getClass().getSimpleName() + " {" +
                 "returnFormId=" + returnFormId +
                 ", orderId=" + orderId +
                 ", dateOfReturn=" + dateOfReturn +

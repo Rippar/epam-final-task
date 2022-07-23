@@ -8,13 +8,24 @@ import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-public class GoToChangePasswordForm implements Command {
+/**
+ * The {@code GoToChangePersonalInfoPageCommand} class implements the functional of {@link Command}
+ * The class executes the command to go to the change personal info page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToChangePersonalInfoPageCommand implements Command {
+
+    /**
+     * The method executes the command to go to the change personal info page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
 
-        return new Router(PagePath.CHANGE_PASSWORD_FORM);
+        return new Router(PagePath.CHANGE_PERSONAL_INFO_PAGE);
     }
 }

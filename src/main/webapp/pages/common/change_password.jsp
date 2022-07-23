@@ -17,7 +17,7 @@
     <body>
     <jsp:include page="fragment/header.jsp"></jsp:include>
     <h4><fmt:message key="title.change_password_page"/></h4>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="changepassword"/>
         <fmt:message key="field.old_password"/> <input type="password" name="password" value="">
         <br/>

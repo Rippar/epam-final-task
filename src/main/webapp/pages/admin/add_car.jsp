@@ -40,12 +40,13 @@
     <head>
         <title>${add_cars_page_lowercase}</title>
     </head>
+    <body>
     <jsp:include page="../common/fragment/header.jsp"></jsp:include>
     <h4>${add_cars_page}</h4>
 
     <b>${add_cars_subtitle}</b>
     <br/>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="addcar"/>
 
         ${car_brand} <input type="text" name="car_brand"

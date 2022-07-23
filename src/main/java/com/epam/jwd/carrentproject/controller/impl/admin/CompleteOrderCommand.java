@@ -22,10 +22,21 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
+/**
+ * The {@code CompleteOrderCommand} class implements the functional of {@link Command}
+ * The class executes the command to make the exists order completed and creates a new
+ * {@link com.epam.jwd.carrentproject.entity.ReturnForm} object in the system
+ *
+ * @author Dmitry Murzo
+ */
 public class CompleteOrderCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the complete order command, writes an additional info to the order's data and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -64,7 +75,7 @@ public class CompleteOrderCommand implements Command {
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to change the order's status as complete.", e);
+            LOGGER.error("Unsuccessful attempt to change the order's status as complete.", e);
             throw new CommandException("Unsuccessful attempt to change the order's status as complete.", e);
 
         }
@@ -86,7 +97,7 @@ public class CompleteOrderCommand implements Command {
             router = new Router(PagePath.COMPLETE_ORDERS_PAGE);
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to create the return form to the order.", e);
+            LOGGER.error("Unsuccessful attempt to create the return form to the order.", e);
             throw new CommandException("Unsuccessful attempt to create the return form to the order.", e);
 
         }
@@ -95,6 +106,12 @@ public class CompleteOrderCommand implements Command {
 
     }
 
+    /**
+     * Removes the temporary data from order's data and return form's data
+     *
+     * @param orderData      the order's data
+     * @param returnFormData the return form's data
+     */
     private void removeTempData(Map<String, String> orderData, Map<String, String> returnFormData) {
         orderData.remove(WRONG_ID_SESSION);
         returnFormData.remove(WRONG_DESCRIPTION_SESSION);
@@ -102,6 +119,13 @@ public class CompleteOrderCommand implements Command {
 
     }
 
+    /**
+     * Updates order's data and return form's data from request
+     *
+     * @param request        a request from controller
+     * @param orderData      the order's data
+     * @param returnFormData the return form's data
+     */
     private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData, Map<String,
             String> returnFormData) {
 
@@ -112,6 +136,11 @@ public class CompleteOrderCommand implements Command {
 
     }
 
+    /**
+     * Removes the results of the commands from session's attributes
+     *
+     * @param session a session
+     */
     private void removeSessionResults(HttpSession session) {
         session.removeAttribute(COMPLETE_ORDER_RESULT);
         session.removeAttribute(ADD_RETURN_FORM_RESULT);

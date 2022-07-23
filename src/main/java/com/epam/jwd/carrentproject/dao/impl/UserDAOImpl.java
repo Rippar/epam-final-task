@@ -17,6 +17,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code UserDAOImpl} class implements the functional of {@link UserDAO}
+ * The class provides access to an underlying database
+ *
+ * @author Dmitry Murzo
+ */
 public class UserDAOImpl implements UserDAO {
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String INSERT_USER = "INSERT INTO users (login, password, first_name, last_name, email, " +
@@ -34,7 +40,7 @@ public class UserDAOImpl implements UserDAO {
 
     private static final String UPDATE_PASSWORD = "UPDATE users SET password =? WHERE user_id =?";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public List<User> findAll() throws DAOException {
@@ -47,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
             userList = mapper.retrieve(resultSet);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding users. ", e);
+            LOGGER.error("Error has occurred while finding users. ", e);
             throw new DAOException("Error has occurred while finding users. ", e);
 
         }
@@ -76,7 +82,7 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot add user to users table. ", e);
+            LOGGER.error("Cannot add user to users table. ", e);
             throw new DAOException("Cannot add user to users table. ", e);
 
         }
@@ -84,7 +90,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean delete(User user) throws DAOException {
+    public boolean inactivate(User user) throws DAOException {
         boolean result;
         PoolProvider poolProvider = PoolProvider.getInstance();
 
@@ -97,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot inactivate user in users table. ", e);
+            LOGGER.error("Cannot inactivate user in users table. ", e);
             throw new DAOException("Cannot inactivate user in users table. ", e);
 
         }
@@ -121,7 +127,7 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot update user's info in users table. ", e);
+            LOGGER.error("Cannot update user's info in users table. ", e);
             throw new DAOException("Cannot update user's info in users table. ", e);
 
         }
@@ -143,7 +149,7 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding user by id.", e);
+            LOGGER.error("Error has occurred while finding user by id.", e);
             throw new DAOException("Error has occurred while finding user by id. ", e);
 
         }
@@ -165,7 +171,7 @@ public class UserDAOImpl implements UserDAO {
             isExist = resultSet.next();
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding user by login.", e);
+            LOGGER.error("Error has occurred while finding user by login.", e);
             throw new DAOException("Error has occurred while finding user by login.", e);
 
         }
@@ -186,7 +192,7 @@ public class UserDAOImpl implements UserDAO {
             isExist = resultSet.next();
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding user by passport.", e);
+            LOGGER.error("Error has occurred while finding user by passport.", e);
             throw new DAOException("Error has occurred while finding user by passport. ", e);
 
         }
@@ -211,7 +217,7 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding user by login and password. ", e);
+            LOGGER.error("Error has occurred while finding user by login and password. ", e);
             throw new DAOException("Error has occurred while finding user by login and password. ", e);
 
         }
@@ -236,7 +242,7 @@ public class UserDAOImpl implements UserDAO {
             isUpdated = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while updating user's password.", e);
+            LOGGER.error("Error has occurred while updating user's password.", e);
             throw new DAOException("Error has occurred while updating user's password.", e);
 
         }

@@ -15,6 +15,12 @@ import java.util.Set;
 import static com.epam.jwd.carrentproject.controller.constant.PagePath.*;
 import static com.epam.jwd.carrentproject.entity.UserRole.*;
 
+/**
+ * The {@code PageRedirectSecurityFilter} class implements the functional of {@link Filter}
+ * The class restricts the access to the page depending on the user's role.
+ *
+ * @author Dmitry Murzo
+ */
 
 @WebFilter(filterName = "PageRedirectSecurityFilter", urlPatterns = {"/pages/*"})
 public class PageRedirectSecurityFilter implements Filter {
@@ -29,11 +35,11 @@ public class PageRedirectSecurityFilter implements Filter {
         guestPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE);
 
         customerPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, CUSTOMER_ACCOUNT_PAGE,
-                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, ORDER_FORM, PAYMENT_FORM, USER_ORDERS_PAGE);
+                CHANGE_PERSONAL_INFO_PAGE, CHANGE_PASSWORD_PAGE, ORDER_PAGE, PAYMENT_PAGE, USER_ORDERS_PAGE);
 
         adminPages = Set.of(LOGIN_PAGE, REGISTRATION_PAGE, MAIN_PAGE, HOME_PAGE, ADMIN_ACCOUNT_PAGE, ALL_USERS_PAGE,
-                CHANGE_PERSONAL_INFO_FORM, CHANGE_PASSWORD_FORM, INACTIVATE_USER_PAGE, ADD_CAR_PAGE, UPDATE_CAR_PAGE,
-                ALL_CARS_PAGE, INACTIVATE_CAR_PAGE, ORDER_FORM, PAYMENT_FORM, USER_ORDERS_PAGE, ALL_ORDERS_PAGE,
+                CHANGE_PERSONAL_INFO_PAGE, CHANGE_PASSWORD_PAGE, INACTIVATE_USER_PAGE, ADD_CAR_PAGE, UPDATE_CAR_PAGE,
+                ALL_CARS_PAGE, INACTIVATE_CAR_PAGE, ORDER_PAGE, PAYMENT_PAGE, USER_ORDERS_PAGE, ALL_ORDERS_PAGE,
                 CONFIRM_ORDERS_PAGE, CANCEL_ORDERS_PAGE, COMPLETE_ORDERS_PAGE, ALL_RETURN_FORMS_PAGE);
 
         allPages = new HashSet<>();

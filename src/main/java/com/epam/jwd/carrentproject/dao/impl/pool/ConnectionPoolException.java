@@ -1,8 +1,15 @@
 package com.epam.jwd.carrentproject.dao.impl.pool;
 
-public class ConnectionPoolException extends Exception{
-    private static final long serialVersionUID = 1L;
-    public ConnectionPoolException(String message, Exception e){
+/**
+ * The {@code ConnectionPoolException} class represents a checked exception from
+ * {@link com.epam.jwd.carrentproject.dao.impl.pool}
+ *
+ * @author Dmitry Murzo
+ * @see Exception
+ */
+public class ConnectionPoolException extends Exception {
+
+    public ConnectionPoolException(String message, Exception e) {
         super(message, e);
     }
 }

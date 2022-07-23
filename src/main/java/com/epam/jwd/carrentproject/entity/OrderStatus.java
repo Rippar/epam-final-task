@@ -1,7 +1,9 @@
 package com.epam.jwd.carrentproject.entity;
 
-import java.util.HashMap;
 
+/**
+ * The {@code OrderStatus} class represents the string constants for order's statuses in the database.
+ */
 public class OrderStatus {
 
     public static final String BOOKED_STATUS = "забронирован";

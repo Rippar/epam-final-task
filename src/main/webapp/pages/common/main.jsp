@@ -29,12 +29,6 @@
     <c:if test="${registration_result == true}">
         <strong><fmt:message key="message.registration_success"/></strong>
     </c:if>
-    <br/>
-
-    <form action="controller">
-        <input type="hidden" name="command" value="logout"/>
-        <input type="submit" value="button_test"/>
-    </form>
     <jsp:include page="fragment/footer.jsp"></jsp:include>
     </body>
     </html>

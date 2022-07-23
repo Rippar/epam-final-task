@@ -20,9 +20,20 @@ import java.util.Map;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToUpdateCarPage implements Command {
+/**
+ * The {@code GoToUpdateCarPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the update car page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToUpdateCarPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the command to go to the update car page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -37,7 +48,7 @@ public class GoToUpdateCarPage implements Command {
             session.setAttribute(CARS_LIST_TO_UPDATE_SESSION, cars);
 
         } catch (ServiceException e) {
-            logger.error("Try to find all cars was failed.", e);
+            LOGGER.error("Try to find all cars was failed.", e);
             throw new CommandException("Try to find all cars was failed.", e);
         }
 

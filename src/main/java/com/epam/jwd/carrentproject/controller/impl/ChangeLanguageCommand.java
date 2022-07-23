@@ -9,10 +9,19 @@ import jakarta.servlet.http.HttpSession;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
+/**
+ * The {@code ChangeLanguageCommand} class implements the functional of {@link Command}
+ * The class executes the command to change the language of the system
+ *
+ * @author Dmitry Murzo
+ */
 public class ChangeLanguageCommand implements Command {
     private static final String ENGLISH_LANGUAGE = "en_EN";
     private static final String RUSSIAN_LANGUAGE = "ru_RU";
 
+    /**
+     * The method executes the change language command, writes an additional info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -24,7 +33,6 @@ public class ChangeLanguageCommand implements Command {
         } else {
             session.setAttribute(LANGUAGE_SESSION, RUSSIAN_LANGUAGE);
         }
-
 
         return new Router(currentPage);
 

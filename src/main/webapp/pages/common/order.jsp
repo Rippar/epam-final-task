@@ -66,7 +66,7 @@
         </tr>
     </c:forEach>
     <br/>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="addorder"/>
         <fmt:message key="field.order_id"/> <input type="text" name="car_id_to_order" value="">
         <br/>

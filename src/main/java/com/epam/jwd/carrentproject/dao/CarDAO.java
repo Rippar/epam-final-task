@@ -4,23 +4,21 @@ import com.epam.jwd.carrentproject.entity.Car;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-public interface CarDAO extends BaseDAO<Integer, Car>{
-    @Override
-    List<Car> findAll() throws DAOException;
+/**
+ * The interface implements the functional of {@link BaseDAO}.
+ *
+ * @author Dmitry Murzo
+ */
+public interface CarDAO extends BaseDAO<Integer, Car> {
 
-    @Override
-    boolean add(Car car) throws DAOException;
-
-    @Override
-    boolean delete(Car car) throws DAOException;
-
-    @Override
-    boolean update(Car car) throws DAOException;
-
-    @Override
-    Optional<Car> findEntityById(Integer entityId) throws DAOException;
-
+    /**
+     * Finds all available cars on given dates in database
+     *
+     * @param pickUpDate - pick up date
+     * @param pickUpDate - drop off date
+     * @return List<Car> -the list of all available cars on given dates
+     * @throws DAOException - if request to database has failed
+     */
     List<Car> findAllAvailableCars(LocalDate pickUpDate, LocalDate dropOffDate) throws DAOException;
 }

@@ -6,17 +6,24 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>500</title>
-</head>
-<body>
-Request from: ${pageContext.errorData.requestURI} isdailed <br/>
-Servlet name: ${pageContext.errorData.servletName} <br/>
-Status code: ${pageContent.errorData.statusCode} <br/>
-Exception: ${pageContext.exception} <br/>
-Exception: ${pageContext.exception.message} <br/>
-<br/><br/><br/>
-Message from exception: ${error_msg}
-</body>
-</html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${language_session}" scope="session"/>
+<fmt:bundle basename="properties.pagecontent">
+    <html>
+    <head>
+        <title>500</title>
+    </head>
+    <body>
+    <nav>
+        <a href="<c:url value = "controller?command=logout"/>"><fmt:message key="header.mainpage"/></a>
+    </nav>
+    <h2><fmt:message key="title.error_page"/> 500</h2>
+    <h4><fmt:message key="message.500_message"/></h4>
+    <br/>
+    <br/>
+    <hr/>
+
+    </body>
+    </html>
+</fmt:bundle>

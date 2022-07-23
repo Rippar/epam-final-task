@@ -11,15 +11,28 @@ import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The {@code GoToHomePageCommand} class implements the functional of {@link Command}
+ * The class executes the command to go to the home page
+ *
+ * @author Dmitry Murzo
+ */
 public class GoToHomePageCommand implements Command {
+
+    /**
+     * The method executes the command to go to the home page, writes an additional info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         session.removeAttribute(SessionAttributeName.UPDATE_PERSONAL_INFO_RESULT);
+
         Map<String, String> userData = new HashMap<>();
         session.setAttribute(SessionAttributeName.USER_DATA_SESSION, userData);
+
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
+
         return new Router(PagePath.HOME_PAGE);
     }
 }

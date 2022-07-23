@@ -4,10 +4,11 @@ import com.epam.jwd.carrentproject.dao.DAOException;
 import com.epam.jwd.carrentproject.dao.DAOProvider;
 import com.epam.jwd.carrentproject.dao.UserDAO;
 import com.epam.jwd.carrentproject.entity.User;
+import com.epam.jwd.carrentproject.entity.UserRole;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.UserService;
 import com.epam.jwd.carrentproject.service.validator.UserValidator;
-import com.epam.jwd.carrentproject.service.validator.impl.UserValidatorImpl;
+import com.epam.jwd.carrentproject.service.validator.ValidatorProvider;
 import com.epam.jwd.carrentproject.util.PasswordEncryptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,11 +19,17 @@ import java.util.Optional;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
+import static com.epam.jwd.carrentproject.entity.UserRole.CUSTOMER_ROLE;
 
+/**
+ * The {@code UserServiceImpl} class implements the functional of {@link UserService}
+ * The class implements the business-logic methods for working with the {@link User} objects
+ *
+ * @author Dmitry Murzo
+ */
 public class UserServiceImpl implements UserService {
-    private static final int CUSTOMER_ROLE_ID = 2;
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public List<User> findAllUsers() throws ServiceException {
@@ -31,7 +38,7 @@ public class UserServiceImpl implements UserService {
         try {
             users = userDAO.findAll();
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find all users.", e);
+            LOGGER.error("Unsuccessful attempt to find all users.", e);
             throw new ServiceException("Unsuccessful attempt to find all users.", e);
         }
         return users;
@@ -41,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public boolean createNewAccount(Map<String, String> userData) throws ServiceException {
         boolean isCreated = false;
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
-        UserValidator userValidator = UserValidatorImpl.getInstance();
+        UserValidator userValidator = ValidatorProvider.getInstance().getUserValidator();
 
         if (!userValidator.validateUserPersonalDataWhenCreate(userData)) {
             return isCreated;
@@ -71,11 +78,11 @@ public class UserServiceImpl implements UserService {
                     .withEmail(email)
                     .withPassport(passportNum)
                     .withIsActive(true)
-                    .withUserRole(CUSTOMER_ROLE_ID)
+                    .withUserRole(UserRole.getRoleId(CUSTOMER_ROLE))
                     .build();
             isCreated = userDAO.add(newUser);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to create new account.", e);
+            LOGGER.error("Unsuccessful attempt to create new account.", e);
             throw new ServiceException("Unsuccessful attempt to create new account.", e);
         }
         return isCreated;
@@ -86,7 +93,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUserPersonalInfo(Map<String, String> userData) throws ServiceException {
         boolean isUpdated = false;
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
-        UserValidator userValidator = UserValidatorImpl.getInstance();
+        UserValidator userValidator = ValidatorProvider.getInstance().getUserValidator();
         Optional<User> optionalUser;
 
         if (!userValidator.validateUserPersonalDataWhenUpdate(userData)) {
@@ -100,13 +107,13 @@ public class UserServiceImpl implements UserService {
             String encryptedPassword = PasswordEncryptor.md5Apache(password);
             optionalUser = userDAO.findUserByLoginAndPassword(login, encryptedPassword);
             if (optionalUser.isEmpty()) {
-                logger.info("User " + login + " has not been found in users");
+                LOGGER.info("User " + login + " has not been found in users");
                 userData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
                 return isUpdated;
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to authenticate user while updating personal info.", e);
+            LOGGER.error("Unsuccessful attempt to authenticate user while updating personal info.", e);
             throw new ServiceException("Unsuccessful attempt to authenticate user while updating personal info.", e);
         }
 
@@ -125,7 +132,7 @@ public class UserServiceImpl implements UserService {
         try {
             isUpdated = userDAO.update(tempUser);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to update user's personal info.", e);
+            LOGGER.error("Unsuccessful attempt to update user's personal info.", e);
             throw new ServiceException("Unsuccessful attempt to update user's personal info.", e);
         }
 
@@ -136,7 +143,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> authentication(Map<String, String> userData) throws ServiceException {
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
-        UserValidator userValidator = UserValidatorImpl.getInstance();
+        UserValidator userValidator = ValidatorProvider.getInstance().getUserValidator();
+
         Optional<User> optionalUser = Optional.empty();
         String login = userData.get(LOGIN_SESSION);
         String password = userData.get(PASSWORD_SESSION);
@@ -150,12 +158,12 @@ public class UserServiceImpl implements UserService {
             String encryptedPassword = PasswordEncryptor.md5Apache(password);
             optionalUser = userDAO.findUserByLoginAndPassword(login, encryptedPassword);
             if (optionalUser.isEmpty()) {
-                logger.info("User " + login + " has not found in users");
+                LOGGER.info("User " + login + " has not found in users");
                 userData.put(NOT_FOUND_SESSION, WRONG_DATA_MARKER);
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful authentication attempt.", e);
+            LOGGER.error("Unsuccessful authentication attempt.", e);
             throw new ServiceException("Unsuccessful authentication attempt. ", e);
         }
 
@@ -167,22 +175,24 @@ public class UserServiceImpl implements UserService {
     public boolean changePassword(Map<String, String> passwordData) throws ServiceException {
         boolean isChanged = false;
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
+        UserValidator userValidator = ValidatorProvider.getInstance().getUserValidator();
+
         int userId = Integer.parseInt(passwordData.get(USER_ID_SESSION));
         String login = passwordData.get(LOGIN_SESSION);
         String oldPassword = passwordData.get(PASSWORD_SESSION);
         String newPassword = passwordData.get(NEW_PASSWORD_SESSION);
         String newRepeatPassword = passwordData.get(REPEAT_NEW_PASSWORD_SESSION);
-        UserValidator validator = UserValidatorImpl.getInstance();
+
         Optional<User> optionalUser;
 
         if (!newPassword.equals(newRepeatPassword)) {
-            logger.info("Invalid new repeated password.");
+            LOGGER.info("Invalid new repeated password.");
             passwordData.put(WRONG_REPEATED_NEW_PASSWORD_SESSION, WRONG_DATA_MARKER);
             return isChanged;
         }
 
-        if (!validator.validatePassword(newPassword) || !validator.validatePassword(oldPassword)) {
-            logger.info("Invalid password.");
+        if (!userValidator.validatePassword(newPassword) || !userValidator.validatePassword(oldPassword)) {
+            LOGGER.info("Invalid password.");
             passwordData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
             return isChanged;
         }
@@ -192,14 +202,14 @@ public class UserServiceImpl implements UserService {
         try {
             optionalUser = userDAO.findUserByLoginAndPassword(login, oldSecretPassword);
             if (optionalUser.isEmpty()) {
-                logger.info("Wrong password.");
+                LOGGER.info("Wrong password.");
                 passwordData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
                 return isChanged;
             }
             String newSecretPassword = PasswordEncryptor.md5Apache(newPassword);
             isChanged = userDAO.updatePassword(userId, newSecretPassword);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to change password.", e);
+            LOGGER.error("Unsuccessful attempt to change password.", e);
             throw new ServiceException("Unsuccessful attempt to change password.", e);
         }
 
@@ -211,10 +221,10 @@ public class UserServiceImpl implements UserService {
         boolean isInactivate = false;
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
         Optional<User> optionalUser;
-        UserValidator validator = UserValidatorImpl.getInstance();
+        UserValidator userValidator = ValidatorProvider.getInstance().getUserValidator();
 
-        if (!validator.validateUserId(userData.get(USER_ID_TO_INACTIVATE_SESSION))) {
-            logger.info("User with Id " + userData.get(USER_ID_TO_INACTIVATE_SESSION) + " has not found in users");
+        if (!userValidator.validateUserId(userData.get(USER_ID_TO_INACTIVATE_SESSION))) {
+            LOGGER.info("User with Id " + userData.get(USER_ID_TO_INACTIVATE_SESSION) + " has not found in users");
             userData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isInactivate;
         }
@@ -224,13 +234,13 @@ public class UserServiceImpl implements UserService {
         try {
             optionalUser = userDAO.findEntityById(userIdToInactivate);
             if (optionalUser.isEmpty()) {
-                logger.info("User with Id " + userIdToInactivate + " has not found in users");
+                LOGGER.info("User with Id " + userIdToInactivate + " has not found in users");
                 userData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
                 return isInactivate;
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find user to inactivate it.", e);
+            LOGGER.error("Unsuccessful attempt to find user to inactivate it.", e);
             throw new ServiceException("Unsuccessful attempt to find user to inactivate it.", e);
         }
 
@@ -239,9 +249,9 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         try {
-            isInactivate = userDAO.delete(tempUser);
+            isInactivate = userDAO.inactivate(tempUser);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to inactivate user.", e);
+            LOGGER.error("Unsuccessful attempt to inactivate user.", e);
             throw new ServiceException("Unsuccessful attempt to inactivate user.", e);
         }
 

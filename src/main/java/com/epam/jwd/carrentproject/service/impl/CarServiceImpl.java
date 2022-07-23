@@ -7,7 +7,7 @@ import com.epam.jwd.carrentproject.entity.Car;
 import com.epam.jwd.carrentproject.service.CarService;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.validator.CarValidator;
-import com.epam.jwd.carrentproject.service.validator.impl.CarValidatorImpl;
+import com.epam.jwd.carrentproject.service.validator.ValidatorProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,16 +22,22 @@ import static com.epam.jwd.carrentproject.controller.constant.RequestParameterNa
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
 
+/**
+ * The {@code CarServiceImpl} class implements the functional of {@link CarService}
+ * The class implements the business-logic methods for working with the {@link Car} objects
+ *
+ * @author Dmitry Murzo
+ */
 public class CarServiceImpl implements CarService {
     private static final String TRUE_VALUE = "1";
     private static final String DATE_PATTERN = "MM/d/yyyy";
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public boolean createNewCar(Map<String, String> carData) throws ServiceException {
         boolean isCreated = false;
         CarDAO carDAO = DAOProvider.getInstance().getCarDAO();
-        CarValidator carValidator = CarValidatorImpl.getInstance();
+        CarValidator carValidator = ValidatorProvider.getInstance().getCarValidator();
 
         if (!carValidator.validateCarData(carData)) {
             return isCreated;
@@ -63,7 +69,7 @@ public class CarServiceImpl implements CarService {
         try {
             isCreated = carDAO.add(newCar);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to create new car.", e);
+            LOGGER.error("Unsuccessful attempt to create new car.", e);
             throw new ServiceException("Unsuccessful attempt to create new car.", e);
         }
 
@@ -75,11 +81,11 @@ public class CarServiceImpl implements CarService {
     public boolean updateCar(Map<String, String> carData) throws ServiceException {
         boolean isUpdated = false;
         CarDAO carDAO = DAOProvider.getInstance().getCarDAO();
-        CarValidator carValidator = CarValidatorImpl.getInstance();
+        CarValidator carValidator = ValidatorProvider.getInstance().getCarValidator();
         Optional<Car> optionalCar;
 
         if (!carValidator.validateCarId(carData.get(CAR_ID_SESSION))) {
-            logger.info("Incorrect car's id: " + carData.get(CAR_ID_SESSION));
+            LOGGER.info("Incorrect car's id: " + carData.get(CAR_ID_SESSION));
             carData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isUpdated;
         }
@@ -89,13 +95,13 @@ public class CarServiceImpl implements CarService {
         try {
             optionalCar = carDAO.findEntityById(carId);
             if (optionalCar.isEmpty()) {
-                logger.info("Car with id " + carId + " has not been found in cars");
+                LOGGER.info("Car with id " + carId + " has not been found in cars");
                 carData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
                 return isUpdated;
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the car while updating car's info.", e);
+            LOGGER.error("Unsuccessful attempt to find the car while updating car's info.", e);
             throw new ServiceException("Unsuccessful attempt to find the car while updating car's info.", e);
         }
 
@@ -130,7 +136,7 @@ public class CarServiceImpl implements CarService {
         try {
             isUpdated = carDAO.update(updatedCar);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to update car's info.", e);
+            LOGGER.error("Unsuccessful attempt to update car's info.", e);
             throw new ServiceException("Unsuccessful attempt to update car's info.", e);
         }
 
@@ -145,7 +151,7 @@ public class CarServiceImpl implements CarService {
             cars = carDAO.findAll();
 
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find all cars.", e);
+            LOGGER.error("Unsuccessful attempt to find all cars.", e);
             throw new ServiceException("Unsuccessful attempt to find all cars.", e);
         }
 
@@ -157,10 +163,10 @@ public class CarServiceImpl implements CarService {
         boolean isInactivate = false;
         CarDAO carDAO = DAOProvider.getInstance().getCarDAO();
         Optional<Car> optionalCar;
-        CarValidator carValidator = CarValidatorImpl.getInstance();
+        CarValidator carValidator = ValidatorProvider.getInstance().getCarValidator();
 
         if (!carValidator.validateCarId(carData.get(CAR_ID_TO_INACTIVATE_SESSION))) {
-            logger.info("Car with id " + carData.get(CAR_ID_TO_INACTIVATE_SESSION) + " has not been found in cars");
+            LOGGER.info("Car with id " + carData.get(CAR_ID_TO_INACTIVATE_SESSION) + " has not been found in cars");
             carData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isInactivate;
         }
@@ -170,13 +176,13 @@ public class CarServiceImpl implements CarService {
         try {
             optionalCar = carDAO.findEntityById(carId);
             if (optionalCar.isEmpty()) {
-                logger.info("Car with id " + carId + " has not been found in cars");
+                LOGGER.info("Car with id " + carId + " has not been found in cars");
                 carData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
                 return isInactivate;
 
             }
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the car to inactivate it.", e);
+            LOGGER.error("Unsuccessful attempt to find the car to inactivate it.", e);
             throw new ServiceException("Unsuccessful attempt to find the car to inactivate it.", e);
         }
 
@@ -185,9 +191,9 @@ public class CarServiceImpl implements CarService {
                 .build();
 
         try {
-            isInactivate = carDAO.delete(tempCar);
+            isInactivate = carDAO.inactivate(tempCar);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to inactivate car.", e);
+            LOGGER.error("Unsuccessful attempt to inactivate car.", e);
             throw new ServiceException("Unsuccessful attempt to inactivate car.", e);
         }
 
@@ -209,7 +215,7 @@ public class CarServiceImpl implements CarService {
             availableCars = carDAO.findAllAvailableCars(pickUpDate, dropOffDate);
 
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find all available cars.", e);
+            LOGGER.error("Unsuccessful attempt to find all available cars.", e);
             throw new ServiceException("Unsuccessful attempt to find all available cars.", e);
         }
 

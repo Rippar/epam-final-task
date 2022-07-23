@@ -27,7 +27,7 @@
     <br/>
     <br/>
     <b><fmt:message key="title.update_personal_info"/></b>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="updateuserpersonalinfo"/>
 
         <fmt:message key="field.email"/> <input type="email" name="email"

@@ -5,7 +5,7 @@ import java.util.Map;
 public interface OrderValidator {
 
     /**
-     * Validate car's id to order it.
+     * Validates car's id to order it.
      *
      * @param id car's id
      * @return the boolean
@@ -13,9 +13,9 @@ public interface OrderValidator {
     boolean validateIdValue(String id);
 
     /**
-     * Validate order data for create and update boolean.
+     * Validate order's data for create and update
      *
-     * @param orderData the order data
+     * @param orderData the order's data
      * @return the boolean
      */
     boolean validateOrderData(Map<String, String> orderData);

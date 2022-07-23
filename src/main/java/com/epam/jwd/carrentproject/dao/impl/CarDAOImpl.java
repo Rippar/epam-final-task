@@ -20,6 +20,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code CarDAOImpl} class implements the functional of {@link CarDAO}
+ * The class provides access to an underlying database
+ *
+ * @author Dmitry Murzo
+ */
 public class CarDAOImpl implements CarDAO {
     private static final String INSERT_CAR =
             "INSERT INTO cars (car_brand, car_model, car_class, car_body, auto_transmission, air_conditioning, " +
@@ -40,7 +46,7 @@ public class CarDAOImpl implements CarDAO {
             "FROM order_forms WHERE cars.car_id = order_forms.car_id AND order_forms.pick_up_date  <= ? AND " +
             "order_forms.drop_off_date >= ? AND (order_forms.status =? OR order_forms.status=?) OR cars.is_Active =0)";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public List<Car> findAll() throws DAOException {
@@ -53,7 +59,7 @@ public class CarDAOImpl implements CarDAO {
             carList = mapper.retrieve(resultSet);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding cars. ", e);
+            LOGGER.error("Error has occurred while finding cars. ", e);
             throw new DAOException("Error has occurred while finding cars. ", e);
 
         }
@@ -81,7 +87,7 @@ public class CarDAOImpl implements CarDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot add car to cars table. ", e);
+            LOGGER.error("Cannot add car to cars table. ", e);
             throw new DAOException("Cannot add car to cars table. ", e);
         }
 
@@ -90,7 +96,7 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public boolean delete(Car car) throws DAOException {
+    public boolean inactivate(Car car) throws DAOException {
         boolean result;
         PoolProvider poolProvider = PoolProvider.getInstance();
 
@@ -102,7 +108,7 @@ public class CarDAOImpl implements CarDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot inactivate car in cars table. ", e);
+            LOGGER.error("Cannot inactivate car in cars table. ", e);
             throw new DAOException("Cannot inactivate car in cars table. ", e);
 
         }
@@ -130,7 +136,7 @@ public class CarDAOImpl implements CarDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot update car in cars table. ", e);
+            LOGGER.error("Cannot update car in cars table. ", e);
             throw new DAOException("Cannot update car in cars table. ", e);
         }
 
@@ -152,7 +158,7 @@ public class CarDAOImpl implements CarDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding car by id.", e);
+            LOGGER.error("Error has occurred while finding car by id.", e);
             throw new DAOException("Error has occurred while finding car by id. ", e);
 
         }
@@ -178,7 +184,7 @@ public class CarDAOImpl implements CarDAO {
             availableCarList = mapper.retrieve(resultSet);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding available cars. ", e);
+            LOGGER.error("Error has occurred while finding available cars. ", e);
             throw new DAOException("Error has occurred while finding available cars. ", e);
 
         }

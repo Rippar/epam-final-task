@@ -20,10 +20,20 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
-
+/**
+ * The {@code InactivateOrderCommand} class implements the functional of {@link Command}
+ * The class executes the command to inactivate an order in the system
+ *
+ * @author Dmitry Murzo
+ */
 public class InactivateOrderCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the inactivate order command, writes an additional info to the order's data and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
 
@@ -45,7 +55,7 @@ public class InactivateOrderCommand implements Command {
 
             session.setAttribute(CANCEL_ORDER_RESULT, result);
 
-            if (sizeBefore!= sizeAfter) {
+            if (sizeBefore != sizeAfter) {
                 session.setAttribute(ORDER_DATA_SESSION, orderData);
 
             }
@@ -55,7 +65,7 @@ public class InactivateOrderCommand implements Command {
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to inactivate order.", e);
+            LOGGER.error("Unsuccessful attempt to inactivate order.", e);
             throw new CommandException("Unsuccessful attempt to inactivate order.", e);
 
         }
@@ -64,10 +74,21 @@ public class InactivateOrderCommand implements Command {
 
     }
 
+    /**
+     * Removes the temporary data from order's data
+     *
+     * @param orderData the order's data
+     */
     private void removeTempData(Map<String, String> orderData) {
         orderData.remove(WRONG_ID_SESSION);
     }
 
+    /**
+     * Updates order's data from request
+     *
+     * @param request   a request from controller
+     * @param orderData the order's data
+     */
     private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
         orderData.put(ORDER_ID_SESSION, request.getParameter(ORDER_ID));
 

@@ -17,8 +17,19 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 
+/**
+ * The {@code UpdateCarCommand} class implements the functional of {@link Command}
+ * The class executes the command to update the exists car in the system
+ *
+ * @author Dmitry Murzo
+ */
 public class UpdateCarCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the update car command, writes an additional info to the car's data and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -46,7 +57,7 @@ public class UpdateCarCommand implements Command {
 
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to update car's info.", e);
+            LOGGER.error("Unsuccessful attempt to update car's info.", e);
             throw new CommandException("Unsuccessful attempt to update car's info.", e);
 
         }
@@ -55,6 +66,11 @@ public class UpdateCarCommand implements Command {
 
     }
 
+    /**
+     * Removes the temporary data from car's data
+     *
+     * @param carData the car's data
+     */
     private void removeTempData(Map<String, String> carData) {
         carData.remove(WRONG_ID_SESSION);
         carData.remove(WRONG_CAR_BRAND_SESSION);
@@ -68,6 +84,12 @@ public class UpdateCarCommand implements Command {
         carData.remove(WRONG_PRICE_SESSION);
     }
 
+    /**
+     * Updates car's data from request
+     *
+     * @param request a request from controller
+     * @param carData the car's data
+     */
     private void updateCarDataFromRequest(HttpServletRequest request, Map<String, String> carData) {
         carData.put(CAR_ID_SESSION, request.getParameter(CAR_ID));
         carData.put(CAR_BRAND_SESSION, request.getParameter(CAR_BRAND));

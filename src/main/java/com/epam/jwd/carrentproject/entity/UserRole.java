@@ -2,11 +2,15 @@ package com.epam.jwd.carrentproject.entity;
 
 import java.util.HashMap;
 
+/**
+ * The {@code UserRole} class represents the string constants of user's roles and its integer equivalents in the
+ * database.
+ */
 public class UserRole {
 
-    public static final String ADMIN_ROLE = "админ";
-    public static final String CUSTOMER_ROLE = "клиент";
-    public static final String GUEST_ROLE = "гость";
+    public static final String ADMIN_ROLE = "admin";
+    public static final String CUSTOMER_ROLE = "customer";
+    public static final String GUEST_ROLE = "guest";
 
     private static HashMap<String, Integer> userRoles = new HashMap<>();
 

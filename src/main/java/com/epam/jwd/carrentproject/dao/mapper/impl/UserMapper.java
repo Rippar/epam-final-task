@@ -10,8 +10,14 @@ import java.util.List;
 
 import static com.epam.jwd.carrentproject.dao.ColumnName.*;
 
+/**
+ * The {@code UserMapper} class uses singleton pattern to control the number of mapper objects created.
+ *
+ * @author Dmitry Murzo
+ * @see Mapper
+ */
 public class UserMapper implements Mapper<User> {
-    private static final UserMapper instance = new UserMapper();
+    private static final UserMapper INSTANCE = new UserMapper();
 
     private UserMapper() {
     }
@@ -22,8 +28,9 @@ public class UserMapper implements Mapper<User> {
      * @return the instance
      */
     public static UserMapper getInstance() {
-        return instance;
+        return INSTANCE;
     }
+
     @Override
     public List<User> retrieve(ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();

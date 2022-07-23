@@ -8,8 +8,6 @@ import com.epam.jwd.carrentproject.controller.constant.SessionAttributeName;
 import com.epam.jwd.carrentproject.entity.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +15,18 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.entity.UserRole.ADMIN_ROLE;
 
+/**
+ * The {@code GoToAccountPageCommand} class implements the functional of {@link Command}
+ * The class executes the command to go to the account page
+ *
+ * @author Dmitry Murzo
+ */
 public class GoToAccountPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    /**
+     * The method executes the command to go to the account page depending on the user's role, writes an additional
+     * info to the user's data and session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -29,12 +36,12 @@ public class GoToAccountPageCommand implements Command {
         session.removeAttribute(UPDATE_PERSONAL_INFO_RESULT);
         userData.put(LOGIN_SESSION, (String) session.getAttribute(LOGIN_SESSION));
 
-        int roleId = (int)session.getAttribute(ROLE_SESSION);
+        int roleId = (int) session.getAttribute(ROLE_SESSION);
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
         Router router;
 
-        if(roleId== UserRole.getRoleId(ADMIN_ROLE)) {
+        if (roleId == UserRole.getRoleId(ADMIN_ROLE)) {
             router = new Router(PagePath.ADMIN_ACCOUNT_PAGE);
         } else {
             router = new Router(PagePath.CUSTOMER_ACCOUNT_PAGE);

@@ -11,13 +11,20 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The {@code Controller} class represents complex form response of {@link Command}
+ * The class processes all requests after filtering.
+ *
+ * @author Dmitry Murzo
+ */
+
 @WebServlet(name = "helloServlet", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public void init() {
-        logger.log(Level.INFO, "Servlet Init :" + this.getServletInfo());
+        LOGGER.log(Level.INFO, "Servlet Init :" + this.getServletInfo());
 
     }
 
@@ -25,18 +32,19 @@ public class Controller extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (CommandException e) {
-            request.getRequestDispatcher(PagePath.ERROR_500).forward(request, response);
+            request.getRequestDispatcher(PagePath.ERROR_500_PAGE).forward(request, response);
         }
 
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         try {
             processRequest(request, response);
         } catch (CommandException e) {
-            request.getRequestDispatcher(PagePath.ERROR_500).forward(request, response);
+            request.getRequestDispatcher(PagePath.ERROR_500_PAGE).forward(request, response);
         }
     }
 
@@ -54,7 +62,7 @@ public class Controller extends HttpServlet {
     }
 
     public void destroy() {
-        logger.log(Level.INFO, "Servlet Destroyed :" + this.getServletName());
+        LOGGER.log(Level.INFO, "Servlet Destroyed :" + this.getServletName());
 
     }
 }

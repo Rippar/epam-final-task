@@ -5,9 +5,15 @@ import com.epam.jwd.carrentproject.dao.impl.OrderDAOImpl;
 import com.epam.jwd.carrentproject.dao.impl.ReturnFormDAOImpl;
 import com.epam.jwd.carrentproject.dao.impl.UserDAOImpl;
 
+/**
+ * The {@code DAOProvider} class uses singleton pattern to control the number of dao objects created. Hides the DAO's
+ * implementations. Also makes it possible to change this implementations if necessary.
+ *
+ * @author Dmitry Murzo
+ */
 public final class DAOProvider {
 
-    private static final DAOProvider instance = new DAOProvider();
+    private static final DAOProvider INSTANCE = new DAOProvider();
     private UserDAO userDAO = new UserDAOImpl();
     private CarDAO carDAO = new CarDAOImpl();
     private OrderDAO orderDAO = new OrderDAOImpl();
@@ -17,7 +23,7 @@ public final class DAOProvider {
     }
 
     public static DAOProvider getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     public UserDAO getUserDAO() {

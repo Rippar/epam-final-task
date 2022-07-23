@@ -12,7 +12,7 @@ import com.epam.jwd.carrentproject.entity.User;
 import com.epam.jwd.carrentproject.service.OrderService;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.validator.OrderValidator;
-import com.epam.jwd.carrentproject.service.validator.impl.OrderValidatorImpl;
+import com.epam.jwd.carrentproject.service.validator.ValidatorProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,23 +27,29 @@ import java.util.Optional;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
+/**
+ * The {@code OrderServiceImpl} class implements the functional of {@link OrderService}
+ * The class implements the business-logic methods for working with the {@link Order} objects
+ *
+ * @author Dmitry Murzo
+ */
 public class OrderServiceImpl implements OrderService {
 
     private static final String DATE_PATTERN = "MM/d/yyyy";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public boolean createNewOrder(List<Car> availableCars, Map<String, String> orderData) throws ServiceException {
         boolean isCreated = false;
         OrderDAO orderDAO = DAOProvider.getInstance().getOrderDAO();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
-        OrderValidator orderValidator = OrderValidatorImpl.getInstance();
+        OrderValidator orderValidator = ValidatorProvider.getInstance().getOrderValidator();
 
         int userId = Integer.parseInt(orderData.get(USER_ID_SESSION));
 
         if (!orderValidator.validateIdValue(orderData.get(CAR_ID_TO_ORDER_SESSION))) {
-            logger.info("Incorrect car's id to order: " + orderData.get(CAR_ID_TO_ORDER_SESSION));
+            LOGGER.info("Incorrect car's id to order: " + orderData.get(CAR_ID_TO_ORDER_SESSION));
             orderData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isCreated;
         }
@@ -51,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
         int carId = Integer.parseInt(orderData.get(CAR_ID_TO_ORDER_SESSION));
 
         if (availableCars.stream().noneMatch(car -> car.getCarId() == carId)) {
-            logger.info("Incorrect available car's id to order: " + carId);
+            LOGGER.info("Incorrect available car's id to order: " + carId);
             orderData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isCreated;
         }
@@ -71,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             isCreated = orderDAO.add(order);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to create new order.", e);
+            LOGGER.error("Unsuccessful attempt to create new order.", e);
             throw new ServiceException("Unsuccessful attempt to create new order.", e);
         }
 
@@ -87,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderDAO.findAll();
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find all orders.", e);
+            LOGGER.error("Unsuccessful attempt to find all orders.", e);
             throw new ServiceException("Unsuccessful attempt to find all orders.", e);
         }
 
@@ -96,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean checkTheOrderDates(Map<String, String> orderData) {
-        OrderValidator orderValidator = OrderValidatorImpl.getInstance();
+        OrderValidator orderValidator = ValidatorProvider.getInstance().getOrderValidator();
         return orderValidator.validateOrderData(orderData);
 
     }
@@ -118,14 +124,14 @@ public class OrderServiceImpl implements OrderService {
         try {
             car = carDAO.findEntityById(carId);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the car.", e);
+            LOGGER.error("Unsuccessful attempt to find the car.", e);
             throw new ServiceException("Unsuccessful attempt to find the car.", e);
         }
 
         try {
             user = userDAO.findEntityById(userId);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the user.", e);
+            LOGGER.error("Unsuccessful attempt to find the user.", e);
             throw new ServiceException("Unsuccessful attempt to find the user.", e);
         }
 
@@ -164,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderList = orderDAO.findOrdersByUserId(userId);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the user's orders.", e);
+            LOGGER.error("Unsuccessful attempt to find the user's orders.", e);
             throw new ServiceException("Unsuccessful attempt to find the user's orders.", e);
         }
 
@@ -179,7 +185,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderList = orderDAO.findOrdersByStatus(status);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find the orders by status.", e);
+            LOGGER.error("Unsuccessful attempt to find the orders by status.", e);
             throw new ServiceException("Unsuccessful attempt to find the orders by status.", e);
         }
 
@@ -191,10 +197,10 @@ public class OrderServiceImpl implements OrderService {
         boolean isChanged = false;
         OrderDAO orderDAO = DAOProvider.getInstance().getOrderDAO();
 
-        OrderValidator orderValidator = OrderValidatorImpl.getInstance();
+        OrderValidator orderValidator = ValidatorProvider.getInstance().getOrderValidator();
 
         if (!orderValidator.validateIdValue(orderData.get(ORDER_ID_SESSION))) {
-            logger.info("Incorrect order's id: " + orderData.get(ORDER_ID_SESSION));
+            LOGGER.info("Incorrect order's id: " + orderData.get(ORDER_ID_SESSION));
             orderData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isChanged;
         }
@@ -202,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
         int orderId = Integer.parseInt(orderData.get(ORDER_ID_SESSION));
 
         if (availableOrders.stream().noneMatch(order -> order.getOrderId() == orderId)) {
-            logger.info("Incorrect available order's id: " + orderId);
+            LOGGER.info("Incorrect available order's id: " + orderId);
             orderData.put(WRONG_ID_SESSION, WRONG_DATA_MARKER);
             return isChanged;
         }
@@ -220,7 +226,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             isChanged = orderDAO.changeStatus(order);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to change order's status.", e);
+            LOGGER.error("Unsuccessful attempt to change order's status.", e);
             throw new ServiceException("Unsuccessful attempt to change order's status.", e);
         }
 

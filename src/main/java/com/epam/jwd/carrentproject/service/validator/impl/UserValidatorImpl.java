@@ -9,6 +9,12 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
+/**
+ * The {@code UserValidatorImpl} class implements the functional of {@link UserValidator}
+ * The class implements the methods to validate user's data
+ *
+ * @author Dmitry Murzo
+ */
 public class UserValidatorImpl implements UserValidator {
     private static final String LOGIN_REGEX = "[\\p{Alpha}][\\p{Alpha}\\d]{4,15}";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$";
@@ -19,21 +25,8 @@ public class UserValidatorImpl implements UserValidator {
     private static final String PASSPORT_REGEX = "[А-Я]{2}[0-9]{7}";
     private static final String INTEGER_CHECK = "\\d+";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final UserValidator instance = new UserValidatorImpl();
-
-    private UserValidatorImpl() {
-    }
-
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
-    public static UserValidator getInstance() {
-        return instance;
-    }
 
     @Override
     public boolean validateUserId(String id) {
@@ -83,38 +76,38 @@ public class UserValidatorImpl implements UserValidator {
         boolean isValid = true;
         if (!validateLogin(login)) {
             userData.put(WRONG_LOGIN_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid login.");
+            LOGGER.info("Invalid login.");
             isValid = false;
         }
         if (!validatePassword(password)) {
             userData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid password.");
+            LOGGER.info("Invalid password.");
             isValid = false;
         }
         if (!password.equals(repeatPassword)) {
             userData.put(MISMATCH_PASSWORDS_SESSION, WRONG_DATA_MARKER);
-            logger.info("Mismatch passwords.");
+            LOGGER.info("Mismatch passwords.");
             isValid = false;
         }
         if (!validateName(firstName)) {
             userData.put(WRONG_FIRST_NAME_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid first name.");
+            LOGGER.info("Invalid first name.");
             isValid = false;
         }
         if (!validateName(lastName)) {
             userData.put(WRONG_LAST_NAME_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid last name.");
+            LOGGER.info("Invalid last name.");
             isValid = false;
         }
         if (!validateEmail(email)) {
             userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid email.");
+            LOGGER.info("Invalid email.");
             isValid = false;
         }
 
         if (!validatePassportNum(passportNum)) {
             userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid passport number.");
+            LOGGER.info("Invalid passport number.");
             isValid = false;
         }
         return isValid;
@@ -129,21 +122,18 @@ public class UserValidatorImpl implements UserValidator {
         boolean isValid = true;
 
         if (!validateName(firstName)) {
-            logger.info("first name------> " + firstName); //delete
             userData.put(WRONG_FIRST_NAME_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid first name.");
+            LOGGER.info("Invalid first name.");
             isValid = false;
         }
         if (!validateName(lastName)) {
-            logger.info("last name------> " + lastName); //delete
             userData.put(WRONG_LAST_NAME_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid last name.");
+            LOGGER.info("Invalid last name.");
             isValid = false;
         }
         if (!validateEmail(email)) {
-            logger.info("email------> " + email); //delete
             userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid email.");
+            LOGGER.info("Invalid email.");
             isValid = false;
         }
 

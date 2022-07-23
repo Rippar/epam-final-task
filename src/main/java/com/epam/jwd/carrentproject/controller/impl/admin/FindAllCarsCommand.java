@@ -17,9 +17,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The {@code FindAllCarsCommand} class implements the functional of {@link Command}
+ * The class executes the command to find all the exists cars in the system
+ *
+ * @author Dmitry Murzo
+ */
 public class FindAllCarsCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the find all cars command, writes an additional info to the request's and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -33,9 +44,10 @@ public class FindAllCarsCommand implements Command {
             router = new Router(PagePath.ALL_CARS_PAGE);
 
         } catch (ServiceException e) {
-            logger.error("Try to find all cars was failed.", e);
+            LOGGER.error("Try to find all cars was failed.", e);
             throw new CommandException("Try to find all cars was failed.", e);
         }
+
         return router;
     }
 }

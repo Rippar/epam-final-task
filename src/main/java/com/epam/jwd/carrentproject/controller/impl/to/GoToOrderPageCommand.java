@@ -22,10 +22,20 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.*;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToOrderForm implements Command {
+/**
+ * The {@code GoToOrderPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the order page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToOrderPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the command to go to the order page, writes an additional
+     * info to the order's data and session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -35,22 +45,24 @@ public class GoToOrderForm implements Command {
         updateOrderDataFromRequest(request, orderData);
         session.setAttribute(ORDER_DATA_SESSION, orderData);
 
-        if(orderService.checkTheOrderDates(orderData)) {
+        if (orderService.checkTheOrderDates(orderData)) {
+
             List<Car> availableCarsList;
 
             try {
                 availableCarsList = carService.findAllAvailableCars(orderData);
             } catch (ServiceException e) {
-                logger.error("Unsuccessful attempt to get the list of available cars.", e);
+                LOGGER.error("Unsuccessful attempt to get the list of available cars.", e);
                 throw new CommandException("Unsuccessful attempt to get the list of available cars.", e);
             }
 
             session.setAttribute(AVAILABLE_CARS_LIST_SESSION, availableCarsList);
-
             orderData.put(USER_ID_SESSION, String.valueOf(session.getAttribute(USER_ID_SESSION)));
+
             String currentPage = Command.extract(request);
             session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
-            return new Router(PagePath.ORDER_FORM);
+
+            return new Router(PagePath.ORDER_PAGE);
 
         } else {
 
@@ -59,6 +71,12 @@ public class GoToOrderForm implements Command {
 
     }
 
+    /**
+     * Updates order's data from request
+     *
+     * @param request   a request from controller
+     * @param orderData the order's data
+     */
     private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
         orderData.put(ORDER_PICK_UP_DATE_SESSION, request.getParameter(PICK_UP_DATE));
         orderData.put(ORDER_DROP_OFF_DATE_SESSION, request.getParameter(DROP_OFF_DATE));

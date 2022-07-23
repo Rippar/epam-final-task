@@ -17,9 +17,20 @@ import java.util.List;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToInactivateUserPage implements Command {
+/**
+ * The {@code GoToInactivateUserPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the inactivate user page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToInactivateUserPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the command to go to the inactivate user page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -33,9 +44,10 @@ public class GoToInactivateUserPage implements Command {
             session.setAttribute(USERS_LIST_TO_INACTIVATE_SESSION, users);
 
         } catch (ServiceException e) {
-            logger.error("Try to find all users was failed.", e);
+            LOGGER.error("Try to find all users was failed.", e);
             throw new CommandException("Try to find all users was failed.", e);
         }
+
         return new Router(PagePath.INACTIVATE_USER_PAGE);
     }
 }

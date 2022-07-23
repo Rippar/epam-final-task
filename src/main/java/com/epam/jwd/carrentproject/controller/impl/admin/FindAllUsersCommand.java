@@ -17,9 +17,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The {@code FindAllUsersCommand} class implements the functional of {@link Command}
+ * The class executes the command to find all the exists users in the system
+ *
+ * @author Dmitry Murzo
+ */
 public class FindAllUsersCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * The method executes the find all users command, writes an additional info to the request's and session's
+     * attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -30,9 +41,9 @@ public class FindAllUsersCommand implements Command {
             List<User> userList = userService.findAllUsers();
             request.setAttribute(RequestAttributeName.USERS_LIST, userList);
             session.setAttribute(SessionAttributeName.CURRENT_PAGE, Command.extract(request));
-            router= new Router(PagePath.ALL_USERS_PAGE);
+            router = new Router(PagePath.ALL_USERS_PAGE);
         } catch (ServiceException e) {
-            logger.error("Try to find all users was failed.", e);
+            LOGGER.error("Try to find all users was failed.", e);
             throw new CommandException("Try to find all users was failed.", e);
         }
 

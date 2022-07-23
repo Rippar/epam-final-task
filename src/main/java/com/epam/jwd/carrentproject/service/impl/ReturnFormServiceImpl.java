@@ -7,7 +7,7 @@ import com.epam.jwd.carrentproject.entity.ReturnForm;
 import com.epam.jwd.carrentproject.service.ReturnFormService;
 import com.epam.jwd.carrentproject.service.ServiceException;
 import com.epam.jwd.carrentproject.service.validator.ReturnFormValidator;
-import com.epam.jwd.carrentproject.service.validator.impl.ReturnFormValidatorImpl;
+import com.epam.jwd.carrentproject.service.validator.ValidatorProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,16 +18,22 @@ import java.util.Map;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
+/**
+ * The {@code ReturnFormServiceImpl} class implements the functional of {@link ReturnFormService}
+ * The class implements the business-logic methods for working with the {@link ReturnForm} objects
+ *
+ * @author Dmitry Murzo
+ */
 public class ReturnFormServiceImpl implements ReturnFormService {
 
     private static final double ZERO_VALUE = 0.0;
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public boolean createNewReturnForm(Map<String, String> returnFormData) throws ServiceException {
         boolean isCreated = false;
         ReturnFormDAO returnFormDAO = DAOProvider.getInstance().getReturnFormDAO();
-        ReturnFormValidator validator = ReturnFormValidatorImpl.getInstance();
+        ReturnFormValidator validator = ValidatorProvider.getInstance().getReturnFormValidator();
 
         if (!validator.validateReturnFormData(returnFormData)) {
             return isCreated;
@@ -53,7 +59,7 @@ public class ReturnFormServiceImpl implements ReturnFormService {
         try {
             isCreated = returnFormDAO.add(returnForm);
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to create new return form.", e);
+            LOGGER.error("Unsuccessful attempt to create new return form.", e);
             throw new ServiceException("Unsuccessful attempt to create new return form.", e);
         }
 
@@ -68,7 +74,7 @@ public class ReturnFormServiceImpl implements ReturnFormService {
         try {
             returnForms = returnFormDAO.findAll();
         } catch (DAOException e) {
-            logger.error("Unsuccessful attempt to find all return forms.", e);
+            LOGGER.error("Unsuccessful attempt to find all return forms.", e);
             throw new ServiceException("Unsuccessful attempt to find all return forms.", e);
         }
 

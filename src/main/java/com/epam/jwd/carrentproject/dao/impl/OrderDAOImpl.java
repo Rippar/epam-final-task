@@ -19,6 +19,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code OrderDAOImpl} class implements the functional of {@link OrderDAO}
+ * The class provides access to an underlying database
+ *
+ * @author Dmitry Murzo
+ */
 public class OrderDAOImpl implements OrderDAO {
     private static final String INSERT_ORDER =
             "INSERT INTO order_forms (user_id, car_id, pick_up_date, drop_off_date, status) values (?,?,?,?,?)";
@@ -32,7 +38,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     private static final String SELECT_ORDERS_BY_STATUS = "SELECT * FROM order_forms WHERE status =?";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
 
     @Override
@@ -47,7 +53,7 @@ public class OrderDAOImpl implements OrderDAO {
             orderList = mapper.retrieve(resultSet);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding all orders. ", e);
+            LOGGER.error("Error has occurred while finding all orders. ", e);
             throw new DAOException("Error has occurred while finding all orders. ", e);
 
         }
@@ -70,7 +76,7 @@ public class OrderDAOImpl implements OrderDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot add order to order form's table. ", e);
+            LOGGER.error("Cannot add order to order form's table. ", e);
             throw new DAOException("Cannot add order to order form's table. ", e);
         }
 
@@ -95,7 +101,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding orders by user's id.", e);
+            LOGGER.error("Error has occurred while finding orders by user's id.", e);
             throw new DAOException("Error has occurred while finding orders by user's id.", e);
 
         }
@@ -118,7 +124,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error has occurred while finding orders by status.", e);
+            LOGGER.error("Error has occurred while finding orders by status.", e);
             throw new DAOException("Error has occurred while finding orders by status.", e);
 
         }
@@ -139,7 +145,7 @@ public class OrderDAOImpl implements OrderDAO {
             result = (preparedStatement.executeUpdate() == 1);
 
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Cannot change order's status in order_forms table. ", e);
+            LOGGER.error("Cannot change order's status in order_forms table. ", e);
             throw new DAOException("Cannot change order's status in order_forms table. ", e);
 
         }
@@ -147,7 +153,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean delete(Order order) throws DAOException {
+    public boolean inactivate(Order order) throws DAOException {
         throw new UnsupportedOperationException("Deleting order is unsupported");
     }
 

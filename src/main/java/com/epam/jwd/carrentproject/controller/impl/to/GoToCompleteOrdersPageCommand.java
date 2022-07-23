@@ -15,34 +15,47 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToCancelOrdersPage implements Command {
+/**
+ * The {@code GoToCompleteOrdersPage class implements the functional of {@link Command}
+ * The class executes the command to go to the complete orders page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToCompleteOrdersPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the command to go to the complete orders page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         OrderService orderService = ServiceProvider.getInstance().getOrderService();
-        session.removeAttribute(SessionAttributeName.CANCEL_ORDER_RESULT);
 
-        List<Order> orders = new ArrayList<>();
+        session.removeAttribute(COMPLETE_ORDER_RESULT);
+        session.removeAttribute(ADD_RETURN_FORM_RESULT);
+        List<Order> orders;
+
 
         try {
-            orders.addAll(orderService.findAllOrdersByStatus(OrderStatus.BOOKED_STATUS));
-            orders.addAll(orderService.findAllOrdersByStatus(OrderStatus.CONFIRMED_STATUS));
+            orders = orderService.findAllOrdersByStatus(OrderStatus.CONFIRMED_STATUS);
+
 
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to get the list of orders by status.", e);
+            LOGGER.error("Unsuccessful attempt to get the list of orders by status.", e);
             throw new CommandException("Unsuccessful attempt to get the list of orders by status.", e);
         }
 
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
-        session.setAttribute(SessionAttributeName.BOOKED_CONFIRMED_ORDERS_SESSION, orders);
-        return new Router(PagePath.CANCEL_ORDERS_PAGE);
+        session.setAttribute(SessionAttributeName.CONFIRMED_ORDERS_SESSION, orders);
+
+        return new Router(PagePath.COMPLETE_ORDERS_PAGE);
     }
 }

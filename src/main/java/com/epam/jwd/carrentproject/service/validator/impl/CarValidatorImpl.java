@@ -11,6 +11,12 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
+/**
+ * The {@code CarValidatorImpl} class implements the functional of {@link CarValidator}
+ * The class implements the methods to validate car's data
+ *
+ * @author Dmitry Murzo
+ */
 public class CarValidatorImpl implements CarValidator {
 
     private static final String CAR_BRAND_REGEX = "[а-яё\\p{Lower}]{1,15}";
@@ -32,17 +38,9 @@ public class CarValidatorImpl implements CarValidator {
     private static final String HATCHBACK_BODY = "хэтчбек";
     private static final String COUPE_BODY = "купе";
     private static final String CONVERTIBLE_BODY = "кабриолет";
-    private static final CarValidator instance = new CarValidatorImpl();
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private CarValidatorImpl() {
-
-    }
-
-    public static CarValidator getInstance() {
-        return instance;
-    }
 
     @Override
     public boolean validateCarId(String id) {
@@ -71,57 +69,57 @@ public class CarValidatorImpl implements CarValidator {
 
         if (carBrand == null || !carBrand.matches(CAR_BRAND_REGEX)) {
             carData.put(WRONG_CAR_BRAND_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid car brand.");
+            LOGGER.info("Invalid car brand.");
             isValid = false;
         }
 
         if (carModel == null || !carModel.matches(CAR_MODEL_REGEX)) {
             carData.put(WRONG_CAR_MODEL_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid car model.");
+            LOGGER.info("Invalid car model.");
             isValid = false;
         }
 
         if (carClass == null || carClasses.stream().noneMatch(element -> element.contains(carClass))) {
 
             carData.put(WRONG_CAR_CLASS_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid car class.");
+            LOGGER.info("Invalid car class.");
             isValid = false;
         }
 
         if (carBody == null || carBodies.stream().noneMatch(element -> element.contains(carBody))) {
 
             carData.put(WRONG_CAR_BODY_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid car body.");
+            LOGGER.info("Invalid car body.");
             isValid = false;
         }
 
         if (autoTransmission == null || !autoTransmission.matches(BOOLEAN_CHECK)) {
             carData.put(WRONG_AUTO_TRANSMISSION_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid auto transmission value.");
+            LOGGER.info("Invalid auto transmission value.");
             isValid = false;
         }
 
         if (airConditioning == null || !airConditioning.matches(BOOLEAN_CHECK)) {
             carData.put(WRONG_AIR_CONDITIONING_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid air conditioning value.");
+            LOGGER.info("Invalid air conditioning value.");
             isValid = false;
         }
 
         if (numOfDoors == null || !numOfDoors.matches(NUM_OF_DOORS_CHECK)) {
             carData.put(WRONG_NUM_OF_DOORS_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid num of doors value.");
+            LOGGER.info("Invalid num of doors value.");
             isValid = false;
         }
 
         if (numOfSeats == null || !numOfSeats.matches(NUM_OF_SEATS_CHECK)) {
             carData.put(WRONG_NUM_OF_SEATS_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid num of seats value.");
+            LOGGER.info("Invalid num of seats value.");
             isValid = false;
         }
 
         if (rentalPrice == null || !rentalPrice.matches(PRICE_REGEX)) {
             carData.put(WRONG_PRICE_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid price value.");
+            LOGGER.info("Invalid price value.");
             isValid = false;
         }
 

@@ -20,10 +20,20 @@ import java.util.Map;
 
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 
-public class GoToUserOrdersPage implements Command {
+/**
+ * The {@code GoToUserOrdersPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the user's orders page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToUserOrdersPageCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The method executes the command to go to the user's orders page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -36,15 +46,16 @@ public class GoToUserOrdersPage implements Command {
         List<Order> userOrders;
 
         try {
-            userOrders= orderService.findAllOrdersByUserId((Integer) session.getAttribute(USER_ID_SESSION));
+            userOrders = orderService.findAllOrdersByUserId((Integer) session.getAttribute(USER_ID_SESSION));
         } catch (ServiceException e) {
-            logger.error("Unsuccessful attempt to get the list of user's orders.", e);
+            LOGGER.error("Unsuccessful attempt to get the list of user's orders.", e);
             throw new CommandException("Unsuccessful attempt to get the list of user's orders.", e);
         }
+        session.setAttribute(USER_ORDERS_SESSION, userOrders);
 
         String currentPage = Command.extract(request);
         session.setAttribute(SessionAttributeName.CURRENT_PAGE, currentPage);
-        session.setAttribute(USER_ORDERS_SESSION, userOrders);
+
         return new Router(PagePath.USER_ORDERS_PAGE);
     }
 }

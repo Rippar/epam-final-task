@@ -11,23 +11,20 @@ import java.util.Map;
 import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.*;
 import static com.epam.jwd.carrentproject.controller.constant.RequestParameterName.WRONG_DATA_MARKER;
 
+/**
+ * The {@code OrderValidatorImpl} class implements the functional of {@link OrderValidator}
+ * The class implements the methods to validate order's data
+ *
+ * @author Dmitry Murzo
+ */
 public class OrderValidatorImpl implements OrderValidator {
 
     private static final String INTEGER_CHECK = "\\d+";
 
     private static final String DATE_PATTERN = "MM/d/yyyy";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private OrderValidatorImpl() {
-
-    }
-
-    private static final OrderValidator instance = new OrderValidatorImpl();
-
-    public static OrderValidator getInstance() {
-        return instance;
-    }
 
     @Override
     public boolean validateIdValue(String id) {
@@ -44,7 +41,7 @@ public class OrderValidatorImpl implements OrderValidator {
 
         if (pickUpDate.isEmpty() || dropOffDate.isEmpty()) {
             orderData.put(WRONG_DATE_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid date.");
+            LOGGER.info("Invalid date.");
             return isValid;
         }
 
@@ -54,12 +51,12 @@ public class OrderValidatorImpl implements OrderValidator {
         LocalDate endDate = LocalDate.parse(dropOffDate, formatter);
         LocalDate currentDate = LocalDate.now();
 
-        if (currentDate.isBefore(startDate) && startDate.isBefore(endDate)){
+        if (currentDate.isBefore(startDate) && startDate.isBefore(endDate)) {
             isValid = true;
 
         } else {
             orderData.put(WRONG_DATE_SESSION, WRONG_DATA_MARKER);
-            logger.info("Invalid date.");
+            LOGGER.info("Invalid date.");
         }
 
         return isValid;

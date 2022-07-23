@@ -1,6 +1,5 @@
 package com.epam.jwd.carrentproject.dao.impl.pool;
 
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +27,15 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
+/**
+ * The {@code ConnectionPool} class represents the thread-safe pool of connections to the database
+ * The class provides access to an underlying database
+ *
+ * @author Dmitry Murzo
+ */
 public final class ConnectionPool {
-
     private final static int DEFAULT_POOL_SIZE = 8;
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
     private String driverName;
@@ -42,11 +46,14 @@ public final class ConnectionPool {
 
 
     public ConnectionPool() {
+
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
+
         this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
         this.url = dbResourceManager.getValue(DBParameter.DB_URL);
         this.user = dbResourceManager.getValue(DBParameter.DB_USER);
         this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
+
         try {
             this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POLL_SIZE));
         } catch (NumberFormatException e) {
@@ -54,11 +61,18 @@ public final class ConnectionPool {
         }
     }
 
+    /**
+     * Initializes connections and puts it in the blocking queue
+     *
+     * @throws ConnectionPoolException - if getting the connection from driver manager has failed or could not register
+     *                                 driver
+     */
     public void initPoolData() throws ConnectionPoolException {
         try {
             Class.forName(driverName);
             givenAwayConQueue = new ArrayBlockingQueue<Connection>(poolSize);
             connectionQueue = new ArrayBlockingQueue<Connection>(poolSize);
+
             for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 PooledConnection pooledConnection = new PooledConnection(connection);
@@ -66,11 +80,15 @@ public final class ConnectionPool {
             }
         } catch (SQLException e) {
             throw new ConnectionPoolException("SQLException in ConnectionPool", e);
+
         } catch (ClassNotFoundException e) {
             throw new ConnectionPoolException("Can't find database driver class", e);
         }
     }
 
+    /**
+     * Closes the connections in the queues
+     */
     public void dispose() {
         clearConnectionQueue();
     }
@@ -80,63 +98,81 @@ public final class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error closing the connection.", e);
+            LOGGER.log(Level.ERROR, "Error closing the connection.", e);
         }
     }
 
+    /**
+     * Takes the free connection from the queue
+     */
     public Connection takeConnection() throws ConnectionPoolException {
         Connection connection = null;
+
         try {
             connection = connectionQueue.take();
             givenAwayConQueue.add(connection);
+
         } catch (InterruptedException e) {
             throw new ConnectionPoolException("Error connecting to the data source.", e);
         }
         return connection;
     }
 
+    /**
+     * Closes the connection, statement and result set
+     */
     public void closeConnection(Connection con, Statement st, ResultSet rs) {
         try {
             con.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            LOGGER.log(Level.ERROR, "Connection isn't return to the pool.");
         }
         try {
             rs.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "ResultSet isn't closed.");
+            LOGGER.log(Level.ERROR, "ResultSet isn't closed.");
         }
         try {
             st.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Statement isn't closed.");
+            LOGGER.log(Level.ERROR, "Statement isn't closed.");
         }
     }
 
+    /**
+     * Closes the connection and statement
+     */
     public void closeConnection(Connection con, Statement st) {
         try {
             con.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            LOGGER.log(Level.ERROR, "Connection isn't return to the pool.");
         }
         try {
             st.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Statement isn't closed.");
+            LOGGER.log(Level.ERROR, "Statement isn't closed.");
         }
     }
 
-    private void closeConnectionsQueue(BlockingQueue<Connection> queue)
-            throws SQLException {
+    private void closeConnectionsQueue(BlockingQueue<Connection> queue) throws SQLException {
         Connection connection;
+
         while ((connection = queue.poll()) != null) {
             if (!connection.getAutoCommit()) {
                 connection.commit();
             }
+
             ((PooledConnection) connection).reallyClose();
         }
     }
 
+    /**
+     * The {@code PooledConnection} class implements the functional of {@link Connection}
+     * The class implements the Proxy pattern in order to protect the connection pool from misuse in the DAO layer
+     *
+     * @author Dmitry Murzo
+     */
     private class PooledConnection implements Connection {
         private Connection connection;
 
@@ -145,10 +181,19 @@ public final class ConnectionPool {
             this.connection.setAutoCommit(true);
         }
 
+        /**
+         *  Releases this PooledConnection object's database and JDBC resources
+         */
         public void reallyClose() throws SQLException {
             connection.close();
         }
 
+        /**
+         * Prevents the direct access to the close() method of the {@link Connection}
+         *
+         * Removes the connection from queue with given away connections and offers it to the queue with free
+         * connections
+         */
         @Override
         public void close() throws SQLException {
             if (connection.isClosed()) {
@@ -316,12 +361,14 @@ public final class ConnectionPool {
         }
 
         @Override
-        public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
+                                                  int resultSetHoldability) throws SQLException {
             return connection.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
         }
 
         @Override
-        public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
+                                             int resultSetHoldability) throws SQLException {
             return connection.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
         }
 

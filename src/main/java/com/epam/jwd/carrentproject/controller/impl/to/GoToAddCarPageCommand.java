@@ -11,14 +11,22 @@ import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.ADD_CAR_RESULT;
-import static com.epam.jwd.carrentproject.controller.constant.SessionAttributeName.INACTIVATE_CAR_RESULT;
+/**
+ * The {@code GoToAddCarPage} class implements the functional of {@link Command}
+ * The class executes the command to go to the add new car page
+ *
+ * @author Dmitry Murzo
+ */
+public class GoToAddCarPageCommand implements Command {
 
-public class GoToAddCarPage implements Command {
+    /**
+     * The method executes the command to go to the add new car page, writes an additional
+     * info to the session's attributes
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        session.removeAttribute(ADD_CAR_RESULT);
+        session.removeAttribute(SessionAttributeName.ADD_CAR_RESULT);
 
         Map<String, String> carData = new HashMap<>();
         session.setAttribute(SessionAttributeName.CAR_DATA_SESSION, carData);

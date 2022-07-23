@@ -16,11 +16,12 @@
 </head>
 <body>
 <jsp:include page="fragment/welcome_header.jsp"></jsp:include>
-<form action="controller">
+<form method = "POST" action="controller">
     <input type="hidden" name="command" value="login"/>
     <fmt:message key="field.login"/> <input type="text" name="login" value=""/>
     <br/>
     <fmt:message key="field.password"/> <input type="password" name="password" value="">
+    <br/>
     <br/>
     <input type="submit" name="sub" value="<fmt:message key="button.confirm"/>"/>
     <br/>

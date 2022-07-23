@@ -3,14 +3,14 @@ package com.epam.jwd.carrentproject.service.validator;
 import java.util.Map;
 
 /**
- * @project Car rent
+ * The {@code UserService} interface defines the methods to validate user's data
+ *
  * @author Dmitry Murzo
- * The interface User validator.
  */
 public interface UserValidator {
 
     /**
-     * Validate user's id for update boolean.
+     * Validates user's id for update
      *
      * @param id user's id
      * @return the boolean
@@ -18,7 +18,7 @@ public interface UserValidator {
     boolean validateUserId(String id);
 
     /**
-     * Validate login boolean.
+     * Validates login
      *
      * @param login the login
      * @return the boolean
@@ -26,7 +26,7 @@ public interface UserValidator {
     boolean validateLogin(String login);
 
     /**
-     * Validate password boolean.
+     * Validates password
      *
      * @param password the password
      * @return the boolean
@@ -34,7 +34,7 @@ public interface UserValidator {
     boolean validatePassword(String password);
 
     /**
-     * Validate name boolean.
+     * Validates name
      *
      * @param name the name
      * @return the boolean
@@ -42,7 +42,7 @@ public interface UserValidator {
     boolean validateName(String name);
 
     /**
-     * Validate surname boolean.
+     * Validates surname
      *
      * @param surname the name
      * @return the boolean
@@ -50,7 +50,7 @@ public interface UserValidator {
     boolean validateSurname(String surname);
 
     /**
-     * Validate email boolean.
+     * Validates email
      *
      * @param email the email
      * @return the boolean
@@ -58,7 +58,7 @@ public interface UserValidator {
     boolean validateEmail(String email);
 
     /**
-     * Validate passport number boolean.
+     * Validates passport number
      *
      * @param passportNumber the passport number
      * @return the boolean
@@ -66,17 +66,17 @@ public interface UserValidator {
     boolean validatePassportNum(String passportNumber);
 
     /**
-     * Validate user data for create boolean.
+     * Validates user's data for create boolean.
      *
-     * @param userData the user data
+     * @param userData the user's data
      * @return the boolean
      */
     boolean validateUserPersonalDataWhenCreate(Map<String, String> userData);
 
     /**
-     * Validate user data for update boolean.
+     * Validates user's data for update
      *
-     * @param userData the user data
+     * @param userData the user's data
      * @return the boolean
      */
     boolean validateUserPersonalDataWhenUpdate(Map<String, String> userData);

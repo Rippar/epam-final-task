@@ -90,7 +90,7 @@
 
     <b>${update_cars_subtitle}</b>
     <br/>
-    <form action="controller">
+    <form method = "POST" action="controller">
         <input type="hidden" name="command" value="updatecar"/>
         ${car_id} <input type="text" name="car_id"
                          pattern="\d+" title="<fmt:message key="message.id_validation"/>"
