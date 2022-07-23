@@ -60,7 +60,7 @@ and additional bill value (in necessary).
 * Log out
 
 <h2>Database schema</h2>
-![db_schema](https://user-images.githubusercontent.com/61383438/180617402-8c413316-16c0-4e84-9a01-3bd0db385df2.png)
+![db_schema](https://github.com/Rippar/final-task/issues/1#issue-1315714090)
 
 <h2>General requirements for the web-project (according to the EPAM course requirements)</h2>
 
