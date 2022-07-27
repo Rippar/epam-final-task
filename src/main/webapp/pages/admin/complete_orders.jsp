@@ -40,39 +40,28 @@
     </br>
     <c:forEach var="order" items="${confirmed_orders_session}">
         <tr>
-            <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
-            <td><c:out value="${car_id} ${order.getCarId()},"/></td>
-            <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
-            <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
-            <td><c:out value="${order_status} ${order.getStatus()};"/></td>
-            </br>
+            <form method = "POST" action="controller">
+                <input type="hidden" name="command" value="completeorder"/>
+                <b>
+                    <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
+                    <td><c:out value="${car_id} ${order.getCarId()},"/></td>
+                    <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
+                    <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
+                    <td><c:out value="${order_status} ${order.getStatus()};"/></td>
+                </b>
+                <input type="hidden" name="order_id" value="${order.getOrderId()}">
+                <br/>
+                ${damage_description}
+
+                <input type="text" name="damage_description" value=""/>
+                &nbsp${bill_value}
+                <input type="text" name="bill_value" pattern="^\d{0,3}([.]\d{1,2})?$"
+                       title="${price_validation}" value=""/>
+                <input type="submit" value="${fulfill_order_button}"/>
+            </form>
         </tr>
     </c:forEach>
     <br/>
-    <b>${fulfill_order}</b>
-    <br/>
-    <form method = "POST" action="controller">
-        <input type="hidden" name="command" value="completeorder"/>
-        ${order_id}
-        <br/>
-        <input type="text" name="order_id"
-                           pattern="\d+" title="<fmt:message key="message.id_validation"/>"
-                           value="">
-        <br/>
-        <br/>
-        ${damage_description}
-        <br/>
-        <input type="text" name="damage_description" value=""/>
-        <br/>
-        <br/>
-        ${bill_value}
-        <br/>
-        <input type="text" name="bill_value" pattern="^\d{0,3}([.]\d{1,2})?$"
-                                                      title="${price_validation}" value=""/>
-        <br/>
-        <br/>
-        <input type="submit" value="${fulfill_order_button}"/>
-    </form>
     <br/>
     <c:if test="${complete_order_result == false}">
         <strong>${fulfillment_order_failed}</strong>

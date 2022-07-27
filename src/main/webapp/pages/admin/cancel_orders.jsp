@@ -42,22 +42,17 @@
             <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
             <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
             <td><c:out value="${order_status} ${order.getStatus()};"/></td>
-            </br>
+            <br/>
+            <form action="controller">
+                <input type="hidden" name="command" value="cancelorder"/>
+                <input type="hidden" name="order_id" value="${order.getOrderId()}">
+                    ${reason_for_cancelling} <input type="text" name="reason_for_canceling" value=""/>
+
+                <input type="submit" value="${cancel_order_button}"/>
+            </form>
+
         </tr>
     </c:forEach>
-    <br/>
-    <b>${order_cancellation_field}</b>
-    <br/>
-    <form action="controller">
-        <input type="hidden" name="command" value="cancelorder"/>
-        ${order_id} <input type="text" name="order_id"
-                           pattern="\d+" title="<fmt:message key="message.id_validation"/>"
-                           value="">
-        <br/>
-        ${reason_for_cancelling} <input type="text" name="reason_for_canceling" value=""/>
-        <br/>
-        <input type="submit" value="${cancel_order_button}"/>
-    </form>
     <br/>
     <c:if test="${cancel_order_result == false}">
         <strong>${cancellation_order_failed}</strong>

@@ -1,12 +1,13 @@
 package com.epam.jwd.carrentproject.entity;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * The {@code Car} class represents a car entity
  */
-public class Car extends AbstractEntity {
+public class Car implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

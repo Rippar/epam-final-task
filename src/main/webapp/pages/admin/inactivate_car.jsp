@@ -11,20 +11,20 @@
 <fmt:setLocale value="${language_session}" scope="session"/>
 <fmt:bundle basename="properties.pagecontent">
 
-    <fmt:message key="title.id" var = "car_id"/>
-    <fmt:message key="title.car_brand" var = "car_brand"/>
-    <fmt:message key="title.car_model" var = "car_model"/>
-    <fmt:message key="title.car_class" var = "car_class"/>
-    <fmt:message key="title.car_body" var = "car_body"/>
-    <fmt:message key="title.car_body" var = "car_body"/>
-    <fmt:message key="title.car_automatic" var = "car_automatic"/>
-    <fmt:message key="title.no_answer" var = "no"/>
-    <fmt:message key="title.yes_answer" var = "yes"/>
-    <fmt:message key="title.car_conditioner" var = "air_conditioner"/>
-    <fmt:message key="title.num_of_doors" var = "num_of_doors"/>
-    <fmt:message key="title.num_of_seats" var = "num_of_seats"/>
-    <fmt:message key="title.rental_price" var = "rental_price"/>
-    <fmt:message key="title.active" var = "car_active"/>
+    <fmt:message key="title.id" var="car_id"/>
+    <fmt:message key="title.car_brand" var="car_brand"/>
+    <fmt:message key="title.car_model" var="car_model"/>
+    <fmt:message key="title.car_class" var="car_class"/>
+    <fmt:message key="title.car_body" var="car_body"/>
+    <fmt:message key="title.car_body" var="car_body"/>
+    <fmt:message key="title.car_automatic" var="car_automatic"/>
+    <fmt:message key="title.no_answer" var="no"/>
+    <fmt:message key="title.yes_answer" var="yes"/>
+    <fmt:message key="title.car_conditioner" var="air_conditioner"/>
+    <fmt:message key="title.num_of_doors" var="num_of_doors"/>
+    <fmt:message key="title.num_of_seats" var="num_of_seats"/>
+    <fmt:message key="title.rental_price" var="rental_price"/>
+    <fmt:message key="title.active" var="car_active"/>
 
     <html>
     <head>
@@ -36,51 +36,47 @@
 
     <c:forEach var="car" items="${cars_list_to_inactivate}">
         <tr>
-            <td><c:out value="${car_id} ${car.getCarId()},"/></td>
-            <td><c:out value="${car_brand} ${car.getCarBrand()},"/></td>
-            <td><c:out value="${car_model} ${car.getCarModel()},"/></td>
-            <td><c:out value="${car_class} ${car.getCarClass()},"/></td>
-            <td><c:out value="${car_body} ${car.getCarBody()},"/></td>
-            <td> ${car_automatic}
-                <c:if test="${car.isAutoTransmission() == false}">
-                    ${no},
-                </c:if>
-                <c:if test="${car.isAutoTransmission() == true}">
-                    ${yes},
-                </c:if>
-            </td>
-            <td> ${air_conditioner}
-                <c:if test="${car.isAirConditioning() == false}">
-                    ${no},
-                </c:if>
-                <c:if test="${car.isAirConditioning() == true}">
-                    ${yes},
-                </c:if>
-            </td>
-            <td><c:out value="${num_of_doors} ${car.getNumOfDoors()},"/></td>
-            <td><c:out value="${num_of_seats} ${car.getNumOfSeats()},"/></td>
-            <td><c:out value="${rental_price} ${car.getRentalPrice()};"/></td>
-            <td> ${car_active}
-                <c:if test="${car.isActive() == false}">
-                    ${no}
-                </c:if>
-                <c:if test="${car.isActive() == true}">
-                    ${yes}
-                </c:if>
-            </td>
-            </br>
+            <form action="controller">
+                <td><c:out value="${car_id} ${car.getCarId()},"/></td>
+                <td><c:out value="${car_brand} ${car.getCarBrand()},"/></td>
+                <td><c:out value="${car_model} ${car.getCarModel()},"/></td>
+                <td><c:out value="${car_class} ${car.getCarClass()},"/></td>
+                <td><c:out value="${car_body} ${car.getCarBody()},"/></td>
+                <td> ${car_automatic}
+                    <c:if test="${car.isAutoTransmission() == false}">
+                        ${no},
+                    </c:if>
+                    <c:if test="${car.isAutoTransmission() == true}">
+                        ${yes},
+                    </c:if>
+                </td>
+                <td> ${air_conditioner}
+                    <c:if test="${car.isAirConditioning() == false}">
+                        ${no},
+                    </c:if>
+                    <c:if test="${car.isAirConditioning() == true}">
+                        ${yes},
+                    </c:if>
+                </td>
+                <td><c:out value="${num_of_doors} ${car.getNumOfDoors()},"/></td>
+                <td><c:out value="${num_of_seats} ${car.getNumOfSeats()},"/></td>
+                <td><c:out value="${rental_price} ${car.getRentalPrice()};"/></td>
+                <td> ${car_active}
+                    <c:if test="${car.isActive() == false}">
+                        ${no}
+                    </c:if>
+                    <c:if test="${car.isActive() == true}">
+                        ${yes}
+                    </c:if>
+                </td>
+                <br/>
+                <input type="hidden" name="command" value="inactivatecar"/>
+                <input type="hidden" name="car_id_to_inactivate" value="${car.getCarId()}">
+                <input type="submit" name="sub" value="<fmt:message key="button.inactivate_car"/>"/>
+                <br/>
+            </form>
         </tr>
     </c:forEach>
-    </br>
-    <form action="controller">
-        <input type="hidden" name="command" value="inactivatecar"/>
-        <fmt:message key="field.inactivate_car_id"/> <input type="text" name="car_id_to_inactivate"
-                                                            pattern="\d+" title="<fmt:message key="message.id_validation"/>"
-                                                            value="">
-        <br/>
-        <input type="submit" name="sub" value="<fmt:message key="button.inactivate_car"/>"/>
-        <br/>
-    </form>
     <br/>
     <c:if test="${inactivate_car_result == false}">
         <strong><fmt:message key="message.inactivate_car_failed"/></strong>

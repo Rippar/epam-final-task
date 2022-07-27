@@ -5,7 +5,7 @@ import com.epam.jwd.carrentproject.entity.Order;
 import java.util.List;
 
 /**
- * The interface implements the functional of {@link BaseDAO}.
+ * The interface extends the functional of {@link BaseDAO}.
  *
  * @author Dmitry Murzo
  */

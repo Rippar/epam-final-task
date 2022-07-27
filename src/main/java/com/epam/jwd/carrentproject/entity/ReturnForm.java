@@ -1,13 +1,17 @@
 package com.epam.jwd.carrentproject.entity;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
  * The {@code ReturnForm} class represents a return form entity
  */
-public class ReturnForm extends AbstractEntity {
+public class ReturnForm implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int returnFormId;
     private int orderId;
     private LocalDate dateOfReturn;

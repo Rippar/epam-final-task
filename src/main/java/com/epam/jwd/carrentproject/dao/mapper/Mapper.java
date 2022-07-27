@@ -1,7 +1,5 @@
 package com.epam.jwd.carrentproject.dao.mapper;
 
-import com.epam.jwd.carrentproject.entity.AbstractEntity;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
  * @author Dmitry Murzo
  */
 
-public interface Mapper<T extends AbstractEntity> {
+public interface Mapper<T> {
     /**
      * Retrieves the list of entities from the result set.
      *

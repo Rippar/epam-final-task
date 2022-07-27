@@ -1,11 +1,12 @@
 package com.epam.jwd.carrentproject.entity;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * The {@code User} class represents a user entity
  */
-public class User extends AbstractEntity {
+public class User implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

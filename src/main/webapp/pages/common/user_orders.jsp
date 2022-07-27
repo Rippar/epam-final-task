@@ -10,7 +10,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${language_session}" scope="session"/>
 <fmt:bundle basename="properties.pagecontent">
-    <fmt:message key="title.id" var = "order_id"/>
+    <fmt:message key="title.order_id" var = "order_id"/>
     <fmt:message key="title.car_id" var = "car_id"/>
     <fmt:message key="field.pick_up_date" var = "pick_up_date"/>
     <fmt:message key="field.drop_off_date" var = "drop_off_date"/>
@@ -29,22 +29,20 @@
     <h4><fmt:message key="title.order_list_page"/></h4>
     <c:forEach var="order" items="${user_orders_session}">
         <tr>
-            <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
-            <td><c:out value="${car_id} ${order.getCarId()},"/></td>
-            <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
-            <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
-            <td><c:out value="${order_status} ${order.getStatus()};"/></td>
-            </br>
+            <form action="controller">
+                <td><c:out value="${order_id} ${order.getOrderId()},"/></td>
+                <td><c:out value="${car_id} ${order.getCarId()},"/></td>
+                <td><c:out value="${pick_up_date} ${order.getPickUpDate()},"/></td>
+                <td><c:out value="${drop_off_date} ${order.getDropOffDate()},"/></td>
+                <td><c:out value="${order_status} ${order.getStatus()};"/></td>
+                <input type="hidden" name="command" value="inactivateorder"/>
+                <input type="hidden" name="order_id" value="${order.getOrderId()}"/>
+                <input type="submit" value="${button_cancel_order}"/>
+                <br/>
+            </form>
         </tr>
     </c:forEach>
     <br/>
-    <br/>
-    ${cancel_order}
-    <form action="controller">
-        <input type="hidden" name="command" value="inactivateorder"/>
-        <input type="text" name="order_id" value=""/>
-        <input type="submit" value="${button_cancel_order}"/>
-    </form>
     <c:if test="${cancel_order_result == false}">
         <strong>${incorrect_order_id}</strong>
     </c:if>

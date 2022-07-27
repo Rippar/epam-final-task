@@ -31,35 +31,29 @@
     <h4><fmt:message key="title.inactivate_user"/></h4>
     <c:forEach var="user" items="${users_list_to_inactivate}">
         <tr>
-            <td><c:out value="${user_id} ${user.getUserId()},"/></td>
-            <td><c:out value="${login} ${user.getLogin()},"/></td>
-            <td><c:out value="${first_name} ${user.getFirstName()},"/></td>
-            <td><c:out value="${last_name} ${user.getLastName()},"/></td>
-            <td><c:out value="${email} ${user.getEmail()},"/></td>
-            <td><c:out value="${passport} ${user.getPassportNum()},"/></td>
+            <form action="controller">
+                <td><c:out value="${user_id} ${user.getUserId()},"/></td>
+                <td><c:out value="${login} ${user.getLogin()},"/></td>
+                <td><c:out value="${first_name} ${user.getFirstName()},"/></td>
+                <td><c:out value="${last_name} ${user.getLastName()},"/></td>
+                <td><c:out value="${email} ${user.getEmail()},"/></td>
+                <td><c:out value="${passport} ${user.getPassportNum()},"/></td>
 
-            <td> ${user_active}
-                <c:if test="${user.isActive() == false}">
-                    ${no}
-                </c:if>
-                <c:if test="${user.isActive() == true}">
-                    ${yes}
-                </c:if>
-            </td>
-            </br>
+                <td> ${user_active}
+                    <c:if test="${user.isActive() == false}">
+                        ${no};
+                    </c:if>
+                    <c:if test="${user.isActive() == true}">
+                        ${yes};
+                    </c:if>
+                </td>
+                <input type="hidden" name="command" value="inactivateuser"/>
+                <input type="hidden" name="user_id_to_inactivate" value="${user.getUserId()}">
+                <input type="submit" name="sub" value="<fmt:message key="button.inactivate_user"/>"/>
+                <br/>
+            </form>
         </tr>
     </c:forEach>
-    <br/>
-    <br/>
-    <form action="controller">
-        <input type="hidden" name="command" value="inactivateuser"/>
-        <fmt:message key="field.inactivate_user_id"/> <input type="text" name="user_id_to_inactivate"
-                                                             pattern="\d+" title="<fmt:message key="message.id_validation"/>"
-                                                             value="">
-        <br/>
-        <input type="submit" name="sub" value="<fmt:message key="button.inactivate_user"/>"/>
-        <br/>
-    </form>
     <br/>
     <c:if test="${inactivate_user_result == false}">
         <strong><fmt:message key="message.inactivate_user_failed"/></strong>

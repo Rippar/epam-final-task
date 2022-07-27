@@ -5,7 +5,7 @@ import com.epam.jwd.carrentproject.entity.User;
 import java.util.Optional;
 
 /**
- * The interface implements the functional of {@link BaseDAO}.
+ * The interface extends the functional of {@link BaseDAO}.
  *
  * @author Dmitry Murzo
  */

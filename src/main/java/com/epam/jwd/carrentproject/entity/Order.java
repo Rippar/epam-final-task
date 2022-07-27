@@ -1,12 +1,13 @@
 package com.epam.jwd.carrentproject.entity;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * The {@code Order} class represents an order entity
  */
-public class Order extends AbstractEntity{
+public class Order implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
